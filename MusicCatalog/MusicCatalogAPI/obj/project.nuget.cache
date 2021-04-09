@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "vMqQVdBfMu4vCcJZaMFof4TP+WH8yEOJnWCQWrbS1v2+NZvdloHQCZeClSOi+BDAuQruibGZziHqgaDL4YqnJQ==",
+  "dgSpecHash": "olhTp8Z8ijmKU9myj9SlVgKj9KFQV48RINItffVafZNPnmORtH+ChlyD/nQ+mN9P8AyL2tViSvkrxxSjjkJG2w==",
   "success": true,
   "projectFilePath": "C:\\Users\\marek\\OneDrive\\Desktop\\CsDev\\ASPNETCore\\MusicCatalog\\Music-catalog\\MusicCatalog\\MusicCatalogAPI\\MusicCatalogAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\marek\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\marek\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.14\\microsoft.aspnetcore.authentication.jwtbearer.3.1.14.nupkg.sha512",
     "C:\\Users\\marek\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\marek\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",
     "C:\\Users\\marek\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.0.1\\microsoft.data.sqlclient.sni.runtime.2.0.1.nupkg.sha512",

@@ -29,7 +29,7 @@ namespace MusicCatalogAPI
             var playMusic = new Supplier
             {
                 Name = "Plus Music",
-                Login = "PlusMusic",
+                Username = "PlusMusic",
                 Albums = new List<Album>
                 {
                     new Album
