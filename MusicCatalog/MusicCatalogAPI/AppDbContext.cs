@@ -11,6 +11,7 @@ namespace MusicCatalogAPI
     {
         private readonly string connectionString = "Server=(localdb)\\mssqllocaldb;Database=MusicCatalogDb;Trusted_Connection=True;";
 
+        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<Album> Albums { get; set; }
         public virtual DbSet<Artist> Artists { get; set; }
@@ -18,7 +19,8 @@ namespace MusicCatalogAPI
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<Supplier>().ToTable("Suppliers");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

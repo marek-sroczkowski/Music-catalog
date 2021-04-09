@@ -56,5 +56,7 @@ C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\Musi
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\bin\Debug\netcoreapp3.1\Humanizer.dll
+C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\obj\Debug\netcoreapp3.1\MusicCatalogAPI.csproj.CoreCompileInputs.cache
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\obj\Debug\netcoreapp3.1\MusicCatalogAPI.MvcApplicationPartsAssemblyInfo.cache
