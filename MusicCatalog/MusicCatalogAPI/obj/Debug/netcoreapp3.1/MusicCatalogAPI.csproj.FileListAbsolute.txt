@@ -7,7 +7,6 @@ C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\Musi
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\bin\Debug\netcoreapp3.1\MusicCatalogAPI.runtimeconfig.dev.json
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\bin\Debug\netcoreapp3.1\MusicCatalogAPI.dll
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\bin\Debug\netcoreapp3.1\MusicCatalogAPI.pdb
-C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\obj\Debug\netcoreapp3.1\MusicCatalogAPI.csprojAssemblyReference.cache
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\obj\Debug\netcoreapp3.1\MusicCatalogAPI.AssemblyInfoInputs.cache
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\obj\Debug\netcoreapp3.1\MusicCatalogAPI.AssemblyInfo.cs
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\obj\Debug\netcoreapp3.1\MusicCatalogAPI.RazorTargetAssemblyInfo.cache
