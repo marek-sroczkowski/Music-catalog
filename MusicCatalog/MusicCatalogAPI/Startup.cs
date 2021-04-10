@@ -1,20 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Identity;
+using MusicCatalogAPI.Models;
+using MusicCatalogAPI.Repositories;
+using MusicCatalogAPI.Validators;
 
 namespace MusicCatalogAPI
 {
@@ -50,9 +48,14 @@ namespace MusicCatalogAPI
             services.AddScoped<IJwtProvider, JwtProvider>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation();
+            services.AddScoped<IValidator<RegisterSupplierDto>, RegisterSupplierValidation>();
+
             services.AddDbContext<AppDbContext>();
+            services.AddTransient<IUserRepository, UserRepository>();
+
             services.AddScoped<SeedData>();
+            services.AddAutoMapper(GetType().Assembly);
         }
 
  
