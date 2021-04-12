@@ -29,7 +29,7 @@ namespace MusicCatalogAPI.Repositories
             .Include(s => s.Albums)
             .FirstOrDefaultAsync(s => s.Username.Equals(username));
 
-        public async void AddUserAsync<T>(T user) where T : User
+        public async Task AddUserAsync<T>(T user) where T : User
         {
             if(user is Supplier)
                 await dbContext.Suppliers.AddAsync(user as Supplier);
@@ -37,7 +37,7 @@ namespace MusicCatalogAPI.Repositories
             await dbContext.SaveChangesAsync();
         }
 
-        public async void DeleteUserAsync(User user)
+        public async Task DeleteUserAsync(User user)
         {
             dbContext.Users.Remove(user);
             await dbContext.SaveChangesAsync();

@@ -6,7 +6,8 @@ namespace MusicCatalogAPI.Repositories
 {
     public interface IUserRepository
     {
-        void AddUserAsync<T>(T user) where T : User;
+        Task AddUserAsync<T>(T user) where T : User;
+        Task DeleteUserAsync(User user);
         Task<Supplier> GetSupplierAsync(string username);
         Task<ICollection<Supplier>> GetSuppliersAsync();
         Task<User> GetUserAsync(string username);

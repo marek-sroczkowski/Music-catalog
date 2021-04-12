@@ -29,7 +29,7 @@ namespace MusicCatalogAPI.Controllers
         }
 
         [HttpPost("register/supplier")]
-        public ActionResult RegisterSupplier([FromBody] RegisterSupplierDto model)
+        public async Task<ActionResult> RegisterSupplier([FromBody] RegisterSupplierDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -37,23 +37,23 @@ namespace MusicCatalogAPI.Controllers
             var newUser = mapper.Map<Supplier>(model);
             newUser.PasswordHash = passwordHasher.HashPassword(newUser, model.Password);
 
-            userRepo.AddUserAsync(newUser);
+            await userRepo.AddUserAsync(newUser);
             return Ok();
         }
 
         [HttpPost("login")]
-        public ActionResult Login([FromBody]LoginUserDto model)
+        public async Task<ActionResult> Login([FromBody]LoginUserDto model)
         {
-            var user = userRepo.GetUserAsync(model.Username);
+            var user = await userRepo.GetUserAsync(model.Username);
 
             if (user == null)
                 return BadRequest("Invalid username or password");
 
-            var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user.Result, user.Result.PasswordHash, model.Password);
+            var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
             if (passwordVerificationResult == PasswordVerificationResult.Failed)
                 return BadRequest("Invalid username of password!");
 
-            var token = jwtProvider.GenerateJwtToken(user.Result);
+            var token = jwtProvider.GenerateJwtToken(user);
             return Ok(token);
         }
     }
