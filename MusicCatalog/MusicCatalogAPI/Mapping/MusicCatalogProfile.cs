@@ -14,6 +14,10 @@ namespace MusicCatalogAPI.Mapping
         {
             CreateMap<RegisterSupplierDto, Supplier>()
                 .ReverseMap();
+
+            CreateMap<Album, AlbumDto>()
+                .ForMember(dto => dto.Supplier, map => map.MapFrom(album => album.Supplier.Name))
+                .ForMember(dto => dto.Artist, map => map.MapFrom(album => album.Artist.Name));
         }
     }
 }
