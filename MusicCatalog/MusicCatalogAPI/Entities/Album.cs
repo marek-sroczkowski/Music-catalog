@@ -7,6 +7,7 @@ namespace MusicCatalogAPI.Entities
         public int Id { get; set; }
         public string Title { get; set; }
         public int PublicationYear { get; set; }
+        public string Version { get; set; }
 
         public virtual Supplier Supplier { get; set; }
         public int SupplierId { get; set; }
