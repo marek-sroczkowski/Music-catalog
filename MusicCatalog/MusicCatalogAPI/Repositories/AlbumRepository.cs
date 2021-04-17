@@ -20,23 +20,23 @@ namespace MusicCatalogAPI.Repositories
             this.artistRepo = artistRepo;
         }
 
+        public async Task<ICollection<Album>> GetAlbumsAsync() => await dbContext.Albums
+            .Include(a => a.Supplier)
+            .Include(a => a.Songs)
+            .Include(a => a.Artist)
+            .ToListAsync();
+
         public async Task<ICollection<Album>> GetAlbumsAsync(string username)
         {
             var supplier = await userRepo.GetSupplierAsync(username);
 
-            return await dbContext.Albums
-            .Include(a => a.Supplier)
-            .Include(a => a.Songs)
-            .Include(a => a.Artist)
+            return (await GetAlbumsAsync())
             .Where(a => a.Supplier.Equals(supplier))
-            .ToListAsync();
+            .ToList();
         }
 
-        public async Task<Album> GetAlbumAsync(int albumId) => await dbContext.Albums
-            .Include(a => a.Supplier)
-            .Include(a => a.Songs)
-            .Include(a => a.Artist)
-            .FirstOrDefaultAsync(a => a.Id.Equals(albumId));
+        public async Task<Album> GetAlbumAsync(int albumId) => (await GetAlbumsAsync())
+            .FirstOrDefault(a => a.Id.Equals(albumId));
 
         public async Task AddAlbumAsync(string username, Album album)
         {
@@ -46,20 +46,19 @@ namespace MusicCatalogAPI.Repositories
             if (artist != null)
                 album.Artist = artist;
 
-            supplier?.Albums.Add(album);
+            supplier.Albums.Add(album);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateAlbumAsync(int albumId, Album newAlbum)
+        public async Task UpdateAlbumAsync(int albumId, Album updatedAlbum)
         {
             var album = await GetAlbumAsync(albumId);
 
-            album.Artist.Name = newAlbum.Artist.Name;
-            album.PublicationYear = newAlbum.PublicationYear;
-            album.Title = newAlbum.Title;
-            album.Version = newAlbum.Version;
+            updatedAlbum.Id = album.Id;
+            updatedAlbum.ArtistId = album.ArtistId;
+            updatedAlbum.SupplierId = album.SupplierId;
 
-            dbContext.Albums.Update(album);
+            dbContext.Entry(album).CurrentValues.SetValues(updatedAlbum);
             await dbContext.SaveChangesAsync();
         }
 
