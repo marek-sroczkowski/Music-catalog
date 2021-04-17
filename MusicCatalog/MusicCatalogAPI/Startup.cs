@@ -59,6 +59,7 @@ namespace MusicCatalogAPI
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAlbumRepository, AlbumRepository>();
             services.AddTransient<IArtistRepository, ArtistRepository>();
+            services.AddTransient<ISongRepository, SongRepository>();
 
             services.AddScoped<DataSeeder>();
             services.AddAutoMapper(GetType().Assembly);
