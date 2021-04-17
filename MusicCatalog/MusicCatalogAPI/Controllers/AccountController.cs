@@ -20,7 +20,10 @@ namespace MusicCatalogAPI.Controllers
         private readonly IJwtProvider jwtProvider;
         private readonly IMapper mapper;
 
-        public AccountController(IUserRepository userRepo, IPasswordHasher<User> passwordHasher, IJwtProvider jwtProvider, IMapper mapper)
+        public AccountController(IUserRepository userRepo, 
+            IPasswordHasher<User> passwordHasher, 
+            IJwtProvider jwtProvider, 
+            IMapper mapper)
         {
             this.userRepo = userRepo;
             this.passwordHasher = passwordHasher;
@@ -45,7 +48,6 @@ namespace MusicCatalogAPI.Controllers
         public async Task<ActionResult> Login([FromBody]LoginUserDto model)
         {
             var user = await userRepo.GetUserAsync(model.Username);
-
             if (user == null)
                 return BadRequest("Invalid username or password");
 
