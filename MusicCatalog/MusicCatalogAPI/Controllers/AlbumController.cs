@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogAPI.Authorization;
 using MusicCatalogAPI.Entities;
+using MusicCatalogAPI.Filters;
 using MusicCatalogAPI.Models;
 using MusicCatalogAPI.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -42,18 +41,16 @@ namespace MusicCatalogAPI.Controllers
 
         [HttpGet("{albumId}")]
         [Authorize(Roles = "MusicSupplier")]
+        [ValidateAlbumExistence]
         public async Task<ActionResult<AlbumDto>> Get(int albumId)
         {
             var album = await albumRepo.GetAlbumAsync(albumId);
-            if (album == null)
-                return NotFound();
 
             var authorizationResult = authorizationService.AuthorizeAsync(User, album, new ResourceOperationRequirement(OperationType.Read)).Result;
             if (!authorizationResult.Succeeded)
                 return Forbid();
 
             var albumDto = mapper.Map<AlbumDetailsDto>(album);
-
             return Ok(albumDto);
         }
 
@@ -68,19 +65,17 @@ namespace MusicCatalogAPI.Controllers
             var username = User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
 
             await albumRepo.AddAlbumAsync(username, album);
-
             return Created("api/album/" + album.Id, null);
         }
 
         [HttpPut("{albumId}")]
+        [ValidateAlbumExistence]
         public async Task<ActionResult> Put(int albumId, [FromBody] AlbumDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var album = await albumRepo.GetAlbumAsync(albumId);
-            if (album == null)
-                return NotFound();
 
             var authorizationResult = authorizationService.AuthorizeAsync(User, album, new ResourceOperationRequirement(OperationType.Update)).Result;
             if (!authorizationResult.Succeeded)
@@ -94,11 +89,10 @@ namespace MusicCatalogAPI.Controllers
 
 
         [HttpDelete("{albumId}")]
+        [ValidateAlbumExistence]
         public async Task<ActionResult> Delete(int albumId)
         {
             var album = await albumRepo.GetAlbumAsync(albumId);
-            if (album == null)
-                return NotFound();
 
             var authorizationResult = authorizationService.AuthorizeAsync(User, album, new ResourceOperationRequirement(OperationType.Delete)).Result;
             if (!authorizationResult.Succeeded)
