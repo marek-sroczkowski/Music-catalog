@@ -27,10 +27,17 @@ namespace MusicCatalogAPI.Repositories
             .Include(s => s.Albums)
             .FirstOrDefaultAsync(s => s.Username.Equals(username));
 
-        public async Task AddUserAsync<T>(T user) where T : User
+        public async Task AddUserAsync(User user)
         {
-            if(user is Supplier)
-                await dbContext.Suppliers.AddAsync(user as Supplier);
+            switch(user)
+            {
+                case Supplier _ when user is Supplier:
+                    await dbContext.Suppliers.AddAsync(user as Supplier);
+                    break;
+                default:
+                    await dbContext.Users.AddAsync(user);
+                    break;
+            }
 
             await dbContext.SaveChangesAsync();
         }
