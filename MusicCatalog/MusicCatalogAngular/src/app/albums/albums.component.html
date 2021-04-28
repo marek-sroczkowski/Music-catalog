@@ -1,0 +1,57 @@
+<app-navbar></app-navbar>
+<div *ngIf="!isSingleView" style="margin: auto; width: 80%; margin-top: 30px">
+  <table class="table table-striped table-bordered table-sm">
+    <tr>
+      <th class="text-center">Album</th>
+      <th class="text-center">Artysta</th>
+      <th class="text-center">Rok publikacji</th>
+      <th class="text-center">Wersja</th>
+      <th class="text-center">Dostawca</th>
+      <th class="text-center">Akcje</th>
+    </tr>
+
+    <tr *ngFor="let album of albums">
+      <td class="text-center">{{ album.title }}</td>
+      <td class="text-center">{{ album.artist.name }}</td>
+      <td class="text-center">{{ album.publicationYear }}</td>
+      <td class="text-center">{{ album.version }}</td>
+      <td class="text-center">{{ album.supplier }}</td>
+      <td class="text-center">
+        <button (click)="buttonClick(album)" id="button-1" class="btn btn-primary btn-sm" style="margin-right: 5px;">Szczegóły</button>
+        <button (click)="buttonClick(album)" id="button-2" class="btn btn-danger btn-sm">Usuń</button>
+      </td>
+    </tr>
+  </table>
+  <div class="text-center">
+    <button id="button-3" class="btn btn-success">Dodaj album</button>
+  </div>
+</div>
+
+<div *ngIf="isSingleView" style="margin: auto; width: 50%; margin-top: 10px">
+  <div class="text-center">
+    <h4>{{singleAlbumData.artist.name}}</h4>
+    <h2>{{singleAlbumData.title}}</h2>
+    <hr/>
+    <table class="table table-striped table-bordered table-sm">
+      <tr>
+        <th class="text-center">Tytuł</th>
+        <th class="text-center">Rok wydania</th>
+        <th class="text-center">Czas trwania</th>
+        <th class="text-center">Akcje</th>
+      </tr>
+  
+      <tr *ngFor="let song of singleAlbumData.songs">
+        <td class="text-center">{{ song.name }}</td>
+        <td class="text-center">{{ song.publicationYear }}</td>
+        <td class="text-center">{{ song.duration }}</td>
+        <td class="text-center">
+          <button id="button-4" class="btn btn-primary btn-sm" style="margin-right: 5px;">Edytuj</button>
+          <button id="button-5" class="btn btn-danger btn-sm">Usuń</button>
+        </td>
+      </tr>
+    </table>
+    <button id="button-6" class="btn btn-success" style="margin-right: 10px;">Dodaj piosenkę</button>
+    <button (click)="isSingleView = !isSingleView" class="btn btn-light">Powrót</button>
+  </div>
+</div>
+
