@@ -4,7 +4,7 @@ namespace MusicCatalogAPI.Models
 {
     public class AlbumDetailsDto
     {
-        public string Artist { get; set; }
+        public ArtistDto Artist { get; set; }
         public string Title { get; set; }
         public string Version { get; set; }
         public int PublicationYear { get; set; }
