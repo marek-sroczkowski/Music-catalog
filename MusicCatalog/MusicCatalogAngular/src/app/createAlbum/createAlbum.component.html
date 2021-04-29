@@ -1,0 +1,35 @@
+<app-navbar></app-navbar>
+
+<br/>
+<div class="text-center">
+  <h4>Dodanie nowego albumu</h4>
+  <div *ngIf="isErrorAlbum" class="alert alert-danger" role="alert">
+      Niepoprawne dane albumu
+  </div>
+</div>
+
+<hr/>
+
+  <div style="margin: auto; width: 40%;">
+    <form (ngSubmit)="onSubmitAlbum()" novalidate>
+        <div class="form-group">
+            <label for="exampleInputName1">Tytuł</label>
+            <input [(ngModel)]="albumData.title" type="text" class="form-control" id="exampleInputName1" name="title" placeholder="Podaj tytuł">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputName2">Artysta</label>
+            <input [(ngModel)]="albumData.artist.name" type="text" class="form-control" id="exampleInputName2" name="artist" placeholder="Podaj artystę">
+        </div>
+        <div class="form-group">
+            <label for="exampleInput3">Rok wydania</label>
+            <input [(ngModel)]="albumData.publicationYear" type="number" class="form-control" id="exampleInput3" name="publishingYear" placeholder="Podaj rok wydania albumu">
+        </div>
+        <div class="form-group">
+            <label for="exampleInpu4">Wersja</label>
+            <input [(ngModel)]="albumData.version" type="text" class="form-control" id="exampleInput4" name="version" placeholder="Podaj wersję albumu">
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-success">Dodaj album</button>
+        </div>
+        </form>
+</div>
