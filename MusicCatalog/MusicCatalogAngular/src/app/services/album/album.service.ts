@@ -24,6 +24,7 @@ export interface albumModel {
 }
 
 export interface albumDetailsModel {
+  id: number,
   title: string,
   publicationYear: number,
   version: string,
@@ -48,5 +49,45 @@ export class AlbumService {
   getSingleAlbum(id: number, token: string): Observable<albumDetailsModel> {
     let headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<albumDetailsModel>(`api/album/${id}`, {headers: headers});
+  }
+
+  createAlbum(album: albumDetailsModel, token: string): Observable<boolean> {
+    let headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
+    return this.http.post('api/album', album, {headers: headers, observe: 'response'})
+    .pipe(
+      map(response => {
+        if(response.status === 400)
+          return false;
+        return true;
+      }),
+      catchError(error => {
+        return of(false);
+      })
+    );
+  }
+
+  deleteAlbum(id: number, token: string): Observable<any> {
+    let headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
+    return this.http.delete(`api/album/${id}`, {headers: headers});
+  }
+
+  createSong(albumId: number, song: songModel, token: string): Observable<boolean> {
+    let headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
+    return this.http.post(`api/album/${albumId}/song`, song, {headers: headers, observe: 'response'})
+    .pipe(
+      map(response => {
+        if(response.status === 400)
+          return false;
+        return true;
+      }),
+      catchError(error => {
+        return of(false);
+      })
+    );
+  }
+
+  deleteSong(albumId: number, songId: number, token: string): Observable<any> {
+    let headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
+    return this.http.delete(`api/album/${albumId}/song/${songId}`, {headers: headers});
   }
 }

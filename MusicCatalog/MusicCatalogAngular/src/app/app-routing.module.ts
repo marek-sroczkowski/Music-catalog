@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AlbumsComponent } from './albums/albums.component';
+import { CreateAlbumComponent } from './createAlbum/createAlbum.component';
 import { LoginComponent } from './login/login.component';
-import { NavbarComponent } from './navbar/navbar.component';
 import { RegisterComponent } from './register/register.component';
 
 
@@ -22,5 +22,9 @@ export const routes: Routes = [
   {
     path: 'albums',
     component: AlbumsComponent
+  },
+  {
+    path: 'createAlbum',
+    component: CreateAlbumComponent
   }
 ];

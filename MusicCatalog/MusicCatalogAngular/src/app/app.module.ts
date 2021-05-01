@@ -11,15 +11,17 @@ import { RouterModule } from '@angular/router';
 import { routes } from './app-routing.module';
 import { RegisterComponent } from './register/register.component';
 import { AlbumsComponent } from './albums/albums.component';
+import { CreateAlbumComponent } from './createAlbum/createAlbum.component';
 
 
 @NgModule({
-  declarations: [		
+  declarations: [					
     AppComponent,
     NavbarComponent,
     LoginComponent,
       RegisterComponent,
-      AlbumsComponent
+      AlbumsComponent,
+      CreateAlbumComponent
    ],
   imports: [
     BrowserModule,

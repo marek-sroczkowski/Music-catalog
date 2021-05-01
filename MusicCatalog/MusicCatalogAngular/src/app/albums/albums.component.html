@@ -11,20 +11,23 @@
     </tr>
 
     <tr *ngFor="let album of albums">
-      <td class="text-center">{{ album.title }}</td>
+      <td class="text-center"><a class="nav-link" (click)="onAlbumDetailsButtonClick(album)">{{album.title}}</a></td>
       <td class="text-center">{{ album.artist.name }}</td>
       <td class="text-center">{{ album.publicationYear }}</td>
       <td class="text-center">{{ album.version }}</td>
       <td class="text-center">{{ album.supplier }}</td>
       <td class="text-center">
-        <button (click)="buttonClick(album)" id="button-1" class="btn btn-primary btn-sm" style="margin-right: 5px;">Szczegóły</button>
-        <button (click)="buttonClick(album)" id="button-2" class="btn btn-danger btn-sm">Usuń</button>
+        <button (click)="onAlbumDetailsButtonClick(album)" id="button-1" class="btn btn-primary btn-sm" style="margin-right: 5px;">Szczegóły</button>
+        <button (click)="onDeleteAlbumButtonClick(album)" id="button-2" class="btn btn-danger btn-sm">Usuń</button>
       </td>
     </tr>
   </table>
+
+  <br/>
   <div class="text-center">
-    <button id="button-3" class="btn btn-success">Dodaj album</button>
+    <button (click)="onCreateAlbumButtonClick()" id="button-3" class="btn btn-success">Dodaj album</button>
   </div>
+
 </div>
 
 <div *ngIf="isSingleView" style="margin: auto; width: 50%; margin-top: 10px">
@@ -45,13 +48,41 @@
         <td class="text-center">{{ song.publicationYear }}</td>
         <td class="text-center">{{ song.duration }}</td>
         <td class="text-center">
-          <button id="button-4" class="btn btn-primary btn-sm" style="margin-right: 5px;">Edytuj</button>
-          <button id="button-5" class="btn btn-danger btn-sm">Usuń</button>
+          <button (click)="onDeleteSongButtonClick(singleAlbumData, song)" class="btn btn-danger btn-sm">Usuń</button>
         </td>
       </tr>
     </table>
-    <button id="button-6" class="btn btn-success" style="margin-right: 10px;">Dodaj piosenkę</button>
-    <button (click)="isSingleView = !isSingleView" class="btn btn-light">Powrót</button>
+    <button (click)="isSingleView = !isSingleView" class="btn btn-primary">Powrót</button>
   </div>
+
+  <br/>
+<div class="text-center">
+  <h4>Dodanie nowego utworu do albumu</h4>
+  <div *ngIf="isErrorSong" class="alert alert-danger" role="alert">
+      Niepoprawne dane utworu
+  </div>
+</div>
+
+<hr/>
+
+  <div style="margin: auto; width: 40%;">
+    <form (ngSubmit)="onSubmitSong(singleAlbumData)" novalidate>
+        <div class="form-group">
+            <label for="exampleInputName1">Nazwa utworu</label>
+            <input [(ngModel)]="songData.name" type="text" class="form-control" id="exampleInputName1" name="songName" placeholder="Podaj nazwę utworu">
+        </div>
+        <div class="form-group">
+          <label for="exampleInput3">Rok wydania</label>
+          <input [(ngModel)]="songData.publicationYear" type="number" class="form-control" id="exampleInput3" name="publishingYear" placeholder="Podaj rok wydania albumu">
+      </div>
+        <div class="form-group">
+            <label for="exampleInputName2">Czas trwania</label>
+            <input [(ngModel)]="songData.duration" type="number" class="form-control" id="exampleInputName2" name="duration" placeholder="Podaj długość utworu">
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-success">Dodaj utwór</button>
+        </div>
+        </form>
+</div>
 </div>
 
