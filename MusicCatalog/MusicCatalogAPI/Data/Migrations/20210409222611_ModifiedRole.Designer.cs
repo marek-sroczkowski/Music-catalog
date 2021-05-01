@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MusicCatalogAPI;
+using MusicCatalogAPI.Data;
 
 namespace MusicCatalogAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210412125812_AlbumWithVersion")]
-    partial class AlbumWithVersion
+    [Migration("20210409222611_ModifiedRole")]
+    partial class ModifiedRole
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,9 +38,6 @@ namespace MusicCatalogAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Version")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

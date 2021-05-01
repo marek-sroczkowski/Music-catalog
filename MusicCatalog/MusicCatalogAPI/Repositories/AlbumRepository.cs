@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MusicCatalogAPI.Data;
 using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Filters;
 using MusicCatalogAPI.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

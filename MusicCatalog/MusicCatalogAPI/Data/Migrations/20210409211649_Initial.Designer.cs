@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MusicCatalogAPI;
+using MusicCatalogAPI.Data;
 
 namespace MusicCatalogAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210409222611_ModifiedRole")]
-    partial class ModifiedRole
+    [Migration("20210409211649_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,13 +97,10 @@ namespace MusicCatalogAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Login")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Username")
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -116,6 +114,9 @@ namespace MusicCatalogAPI.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.ToTable("Suppliers");
                 });

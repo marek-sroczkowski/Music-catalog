@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MusicCatalogAPI.Data;
 using MusicCatalogAPI.Models.AccountDtos;
 using System.Linq;
 

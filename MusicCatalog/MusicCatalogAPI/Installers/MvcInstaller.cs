@@ -13,7 +13,6 @@ namespace MusicCatalogAPI.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<AppDbContext>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAlbumRepository, AlbumRepository>();
             services.AddTransient<IArtistRepository, ArtistRepository>();

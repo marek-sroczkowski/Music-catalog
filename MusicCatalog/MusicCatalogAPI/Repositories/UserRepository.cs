@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MusicCatalogAPI.Data;
 using MusicCatalogAPI.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
