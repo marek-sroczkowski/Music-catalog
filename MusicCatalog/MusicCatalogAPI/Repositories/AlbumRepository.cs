@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicCatalogAPI.Entities;
+using MusicCatalogAPI.Filters;
+using MusicCatalogAPI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +22,45 @@ namespace MusicCatalogAPI.Repositories
             this.artistRepo = artistRepo;
         }
 
-        public async Task<ICollection<Album>> GetAlbumsAsync() => await dbContext.Albums
+        public async Task<IEnumerable<Album>> GetAlbumsAsync() => await dbContext.Albums
             .Include(a => a.Supplier)
             .Include(a => a.Songs)
             .Include(a => a.Artist)
             .ToListAsync();
+
+        public async Task<PagedList<Album>> GetAlbumsAsync(string username, AlbumParameters albumParameters)
+        {
+            var albums = await GetAlbumsAsync();
+            SearchByArtistName(ref albums, albumParameters.ArtistName);
+            SearchByTitle(ref albums, albumParameters.Title);
+            SearchByPublicationYear(ref albums, albumParameters.PublicationYear);
+
+            return PagedList<Album>.ToPagedList(albums.ToList(), albumParameters.PageNumber, albumParameters.PageSize);
+        }
+
+        private void SearchByArtistName(ref IEnumerable<Album> albums, string artistName)
+        {
+            if (string.IsNullOrEmpty(artistName))
+                return;
+
+            albums = albums.Where(a => a.Artist.Name.Equals(artistName));
+        }
+
+        private void SearchByTitle(ref IEnumerable<Album> albums, string title)
+        {
+            if (string.IsNullOrEmpty(title))
+                return;
+
+            albums = albums.Where(a => a.Title.Equals(title));
+        }
+
+        private void SearchByPublicationYear(ref IEnumerable<Album> albums, int publicationYear)
+        {
+            if (publicationYear == 0)
+                return;
+
+            albums = albums.Where(a => a.PublicationYear.Equals(publicationYear));
+        }
 
         public async Task<ICollection<Album>> GetAlbumsAsync(string username)
         {

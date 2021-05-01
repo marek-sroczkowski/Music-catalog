@@ -6,6 +6,7 @@ using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Filters;
 using MusicCatalogAPI.Models;
 using MusicCatalogAPI.Repositories;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -27,16 +28,36 @@ namespace MusicCatalogAPI.Controllers
             this.authorizationService = authorizationService;
         }
 
+        //[HttpGet]
+        //[Authorize(Roles = "MusicSupplier")]
+        //public async Task<ActionResult<List<AlbumDto>>> Get()
+        //{
+        //    var username = User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
+
+        //    var albums = await albumRepo.GetAlbumsAsync(username);
+        //    var albumDtos = mapper.Map<List<AlbumDto>>(albums);
+
+        //    return Ok(albumDtos);
+        //}
+
         [HttpGet]
         [Authorize(Roles = "MusicSupplier")]
-        public async Task<ActionResult<List<AlbumDto>>> Get()
+        public async Task<ActionResult<List<AlbumDto>>> Get([FromQuery] AlbumParameters albumParameters)
         {
             var username = User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
+            var albums = await albumRepo.GetAlbumsAsync(username, albumParameters);
 
-            var albums = await albumRepo.GetAlbumsAsync(username);
-            var albumDtos = mapper.Map<List<AlbumDto>>(albums);
+            var metadata = new
+            {
+                albums.TotalCount,
+                albums.PageSize,
+                albums.CurrentPage,
+                albums.HasNext,
+                albums.HasPrevious
+            };
 
-            return Ok(albumDtos);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            return Ok(mapper.Map<List<AlbumDto>>(albums));
         }
 
         [HttpGet("{albumId}")]
@@ -61,6 +82,7 @@ namespace MusicCatalogAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            model.Supplier = null;
             var album = mapper.Map<Album>(model);
             var username = User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
 
