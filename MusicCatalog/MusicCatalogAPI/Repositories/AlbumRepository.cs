@@ -88,14 +88,18 @@ namespace MusicCatalogAPI.Repositories
 
         public async Task UpdateAlbumAsync(int albumId, Album updatedAlbum)
         {
-            var album = await GetAlbumAsync(albumId);
+            var existingAlbum = await GetAlbumAsync(albumId);
+            SetIds(existingAlbum, updatedAlbum);
 
-            updatedAlbum.Id = album.Id;
-            updatedAlbum.ArtistId = album.ArtistId;
-            updatedAlbum.SupplierId = album.SupplierId;
-
-            dbContext.Entry(album).CurrentValues.SetValues(updatedAlbum);
+            dbContext.Entry(existingAlbum).CurrentValues.SetValues(updatedAlbum);
             await dbContext.SaveChangesAsync();
+        }
+
+        private void SetIds(Album existingAlbum, Album updatedAlbum)
+        {
+            updatedAlbum.Id = existingAlbum.Id;
+            updatedAlbum.ArtistId = existingAlbum.ArtistId;
+            updatedAlbum.SupplierId = existingAlbum.SupplierId;
         }
 
         public async Task DeleteAlbumAsync(int albumId)

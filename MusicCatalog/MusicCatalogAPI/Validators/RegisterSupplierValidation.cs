@@ -1,9 +1,6 @@
 ﻿using FluentValidation;
-using MusicCatalogAPI.Models;
-using System;
-using System.Collections.Generic;
+using MusicCatalogAPI.Models.AccountDtos;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MusicCatalogAPI.Validators
 {

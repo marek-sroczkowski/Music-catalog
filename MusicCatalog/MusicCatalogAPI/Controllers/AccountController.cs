@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Identity;
-using MusicCatalogAPI.Models;
+using MusicCatalogAPI.Models.AccountDtos;
 using MusicCatalogAPI.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MusicCatalogAPI.Controllers

@@ -1,4 +1,4 @@
-﻿namespace MusicCatalogAPI.Models
+﻿namespace MusicCatalogAPI.Models.AccountDtos
 {
     public class LoginUserDto
     {

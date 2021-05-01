@@ -2,9 +2,10 @@
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MusicCatalogAPI.Models;
+using MusicCatalogAPI.Models.AccountDtos;
 using MusicCatalogAPI.Repositories;
 using MusicCatalogAPI.Validators;
+using System.Reflection;
 
 namespace MusicCatalogAPI.Installers
 {
@@ -17,7 +18,7 @@ namespace MusicCatalogAPI.Installers
             services.AddTransient<IAlbumRepository, AlbumRepository>();
             services.AddTransient<IArtistRepository, ArtistRepository>();
             services.AddTransient<ISongRepository, SongRepository>();
-            services.AddAutoMapper(GetType().Assembly);
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddControllers().AddFluentValidation();
             services.AddScoped<IValidator<RegisterSupplierDto>, RegisterSupplierValidation>();
         }

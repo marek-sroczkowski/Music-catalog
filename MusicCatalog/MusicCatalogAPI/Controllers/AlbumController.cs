@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MusicCatalogAPI.Authorization;
 using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Filters;
-using MusicCatalogAPI.Models;
-using MusicCatalogAPI.Models.Album;
+using MusicCatalogAPI.Models.AlbumDtos;
 using MusicCatalogAPI.Repositories;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -66,7 +65,7 @@ namespace MusicCatalogAPI.Controllers
 
         [HttpPost]
         [Authorize(Roles = "MusicSupplier")]
-        public async Task<ActionResult> Post([FromBody] CreateUpdateAlbumDto model)
+        public async Task<ActionResult> Post([FromBody] CreateAlbumDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -80,7 +79,7 @@ namespace MusicCatalogAPI.Controllers
 
         [HttpPut("{albumId}")]
         [ValidateAlbumExistence]
-        public async Task<ActionResult> Put(int albumId, [FromBody] CreateUpdateAlbumDto model)
+        public async Task<ActionResult> Put(int albumId, [FromBody] UpdateAlbumDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
