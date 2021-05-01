@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Models;
+using MusicCatalogAPI.Models.Album;
+using MusicCatalogAPI.Models.Artist;
+using MusicCatalogAPI.Models.Song;
 
 namespace MusicCatalogAPI.Mapping
 {
@@ -14,6 +17,9 @@ namespace MusicCatalogAPI.Mapping
             CreateMap<Artist, ArtistDto>()
                 .ReverseMap();
 
+            CreateMap<CreateUpdateArtistDto, Artist>()
+                .ReverseMap();
+
             CreateMap<Album, AlbumDto>()
                 .ForMember(dto => dto.Supplier, map => map.MapFrom(album => album.Supplier.Name))
                 .ReverseMap();
@@ -21,8 +27,14 @@ namespace MusicCatalogAPI.Mapping
             CreateMap<SongDto, Song>()
                 .ReverseMap();
 
+            CreateMap<CreateUpdateSongDto, Song>()
+                .ReverseMap();
+
             CreateMap<Album, AlbumDetailsDto>()
                 .ForMember(dto => dto.Supplier, map => map.MapFrom(album => album.Supplier.Name));
+
+            CreateMap<CreateUpdateAlbumDto, Album>()
+                .ReverseMap();
         }
     }
 }

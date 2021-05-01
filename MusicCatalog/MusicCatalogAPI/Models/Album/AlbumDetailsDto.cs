@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MusicCatalogAPI.Models.Song;
+using System.Collections.Generic;
 
 namespace MusicCatalogAPI.Models
 {

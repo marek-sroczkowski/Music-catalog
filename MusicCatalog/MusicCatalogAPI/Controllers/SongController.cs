@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Filters;
 using MusicCatalogAPI.Models;
+using MusicCatalogAPI.Models.Song;
 using MusicCatalogAPI.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -25,16 +26,16 @@ namespace MusicCatalogAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<SongDto>> Get(int albumId)
+        public async Task<ActionResult<CreateUpdateSongDto>> Get(int albumId)
         {
             var songs = await songRepo.GetSongsAsync(albumId);
-            var songDtos = mapper.Map<List<SongDto>>(songs);
+            var songDtos = mapper.Map<List<CreateUpdateSongDto>>(songs);
 
             return Ok(songDtos);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(int albumId, [FromBody] SongDto model)
+        public async Task<ActionResult> Post(int albumId, [FromBody] CreateUpdateSongDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -47,7 +48,7 @@ namespace MusicCatalogAPI.Controllers
 
         [HttpPut("{songId}")]
         [ValidateSongExistence]
-        public async Task<ActionResult> Put(int albumId, int songId, [FromBody] SongDto model)
+        public async Task<ActionResult> Put(int albumId, int songId, [FromBody] CreateUpdateSongDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

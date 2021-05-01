@@ -5,6 +5,7 @@ using MusicCatalogAPI.Authorization;
 using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Filters;
 using MusicCatalogAPI.Models;
+using MusicCatalogAPI.Models.Album;
 using MusicCatalogAPI.Repositories;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -27,18 +28,6 @@ namespace MusicCatalogAPI.Controllers
             this.mapper = mapper;
             this.authorizationService = authorizationService;
         }
-
-        //[HttpGet]
-        //[Authorize(Roles = "MusicSupplier")]
-        //public async Task<ActionResult<List<AlbumDto>>> Get()
-        //{
-        //    var username = User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
-
-        //    var albums = await albumRepo.GetAlbumsAsync(username);
-        //    var albumDtos = mapper.Map<List<AlbumDto>>(albums);
-
-        //    return Ok(albumDtos);
-        //}
 
         [HttpGet]
         [Authorize(Roles = "MusicSupplier")]
@@ -63,7 +52,7 @@ namespace MusicCatalogAPI.Controllers
         [HttpGet("{albumId}")]
         [Authorize(Roles = "MusicSupplier")]
         [ValidateAlbumExistence]
-        public async Task<ActionResult<AlbumDto>> Get(int albumId)
+        public async Task<ActionResult<AlbumDetailsDto>> Get(int albumId)
         {
             var album = await albumRepo.GetAlbumAsync(albumId);
 
@@ -77,12 +66,11 @@ namespace MusicCatalogAPI.Controllers
 
         [HttpPost]
         [Authorize(Roles = "MusicSupplier")]
-        public async Task<ActionResult> Post([FromBody] AlbumDto model)
+        public async Task<ActionResult> Post([FromBody] CreateUpdateAlbumDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            model.Supplier = null;
             var album = mapper.Map<Album>(model);
             var username = User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
 
@@ -92,7 +80,7 @@ namespace MusicCatalogAPI.Controllers
 
         [HttpPut("{albumId}")]
         [ValidateAlbumExistence]
-        public async Task<ActionResult> Put(int albumId, [FromBody] AlbumDto model)
+        public async Task<ActionResult> Put(int albumId, [FromBody] CreateUpdateAlbumDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

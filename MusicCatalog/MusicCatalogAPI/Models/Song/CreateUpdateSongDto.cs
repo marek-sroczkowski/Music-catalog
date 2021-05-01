@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MusicCatalogAPI.Models
+namespace MusicCatalogAPI.Models.Song
 {
-    public class SongDto
+    public class CreateUpdateSongDto
     {
-        public int Id { get; set; }
-
         [Required]
         public string Name { get; set; }
 
