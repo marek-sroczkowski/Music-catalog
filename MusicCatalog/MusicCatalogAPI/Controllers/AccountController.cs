@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Identity;
+using MusicCatalogAPI.Interfaces;
 using MusicCatalogAPI.Models.AccountDtos;
-using MusicCatalogAPI.Repositories;
 using System.Threading.Tasks;
 
 namespace MusicCatalogAPI.Controllers
@@ -12,20 +10,13 @@ namespace MusicCatalogAPI.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly IUserRepository userRepo;
-        private readonly IPasswordHasher<User> passwordHasher;
-        private readonly IJwtProvider jwtProvider;
-        private readonly IMapper mapper;
+        private readonly IUserService _userService;
+        private readonly IJwtProvider _jwtProvider;
 
-        public AccountController(IUserRepository userRepo, 
-            IPasswordHasher<User> passwordHasher, 
-            IJwtProvider jwtProvider, 
-            IMapper mapper)
+        public AccountController(IUserService userService, IJwtProvider jwtProvider)
         {
-            this.userRepo = userRepo;
-            this.passwordHasher = passwordHasher;
-            this.jwtProvider = jwtProvider;
-            this.mapper = mapper;
+            _userService = userService;
+            _jwtProvider = jwtProvider;
         }
 
         [HttpPost("register/supplier")]
@@ -34,25 +25,22 @@ namespace MusicCatalogAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var newUser = mapper.Map<Supplier>(model);
-            newUser.PasswordHash = passwordHasher.HashPassword(newUser, model.Password);
-
-            await userRepo.AddUserAsync(newUser);
+            await _userService.RegisterSupplierAsync(model);
             return Ok();
         }
 
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody]LoginUserDto model)
         {
-            var user = await userRepo.GetUserAsync(model.Username);
+            var user = await _userService.GetUser(model);
             if (user == null)
                 return BadRequest("Invalid username or password");
 
-            var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
+            var passwordVerificationResult = await _userService.ValidatePassword(model);
             if (passwordVerificationResult == PasswordVerificationResult.Failed)
                 return BadRequest("Invalid username of password!");
 
-            var token = jwtProvider.GenerateJwtToken(user);
+            var token = _jwtProvider.GenerateJwtToken(user);
             return Ok(token);
         }
     }

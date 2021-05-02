@@ -21,6 +21,8 @@ namespace MusicCatalogAPI.Installers
             services.AddTransient<ISongRepository, SongRepository>();
 
             services.AddScoped<IAlbumService, AlbumService>();
+            services.AddScoped<ISongService, SongService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddControllers().AddFluentValidation();

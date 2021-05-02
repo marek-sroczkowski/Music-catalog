@@ -1,12 +1,10 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using MusicCatalogAPI.Entities;
+using MusicCatalogAPI.Models.AccountDtos;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicCatalogAPI.Identity
 {
@@ -19,7 +17,7 @@ namespace MusicCatalogAPI.Identity
             this.jwtOptions = jwtOptions;
         }
 
-        public string GenerateJwtToken(User user)
+        public string GenerateJwtToken(UserDto user)
         {
             var claims = new List<Claim>()
             {

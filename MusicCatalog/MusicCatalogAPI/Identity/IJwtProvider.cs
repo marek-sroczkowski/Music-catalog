@@ -1,9 +1,9 @@
-﻿using MusicCatalogAPI.Entities;
+﻿using MusicCatalogAPI.Models.AccountDtos;
 
 namespace MusicCatalogAPI.Identity
 {
     public interface IJwtProvider
     {
-        string GenerateJwtToken(User user);
+        string GenerateJwtToken(UserDto user);
     }
 }

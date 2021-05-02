@@ -7,7 +7,7 @@ namespace MusicCatalogAPI.Repositories
     public interface ISongRepository
     {
         Task AddSongAsync(int albumId, Song song);
-        Task DeleteSongAsync(int songId);
+        Task DeleteSongAsync(Song song);
         Task DeleteSongsAsync(int albumId);
         Task<Song> GetSongAsync(int albumId, int songId);
         Task<ICollection<Song>> GetSongsAsync(int albumId);

@@ -8,23 +8,23 @@ namespace MusicCatalogAPI.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly AppDbContext dbContext;
+        private readonly AppDbContext _dbContext;
 
         public UserRepository(AppDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
         }
 
-        public async Task<ICollection<User>> GetUsersAsync() => await dbContext.Users.ToListAsync();
+        public async Task<ICollection<User>> GetUsersAsync() => await _dbContext.Users.ToListAsync();
 
-        public async Task<ICollection<Supplier>> GetSuppliersAsync() => await dbContext.Suppliers
+        public async Task<ICollection<Supplier>> GetSuppliersAsync() => await _dbContext.Suppliers
             .Include(s => s.Albums)
             .ToListAsync();
 
-        public async Task<User> GetUserAsync(string username) => await dbContext.Users
+        public async Task<User> GetUserAsync(string username) => await _dbContext.Users
             .FirstOrDefaultAsync(u => u.Username.Equals(username));
 
-        public async Task<Supplier> GetSupplierAsync(string username) => await dbContext.Suppliers
+        public async Task<Supplier> GetSupplierAsync(string username) => await _dbContext.Suppliers
             .Include(s => s.Albums)
             .FirstOrDefaultAsync(s => s.Username.Equals(username));
 
@@ -33,20 +33,20 @@ namespace MusicCatalogAPI.Repositories
             switch(user)
             {
                 case Supplier _ when user is Supplier:
-                    await dbContext.Suppliers.AddAsync(user as Supplier);
+                    await _dbContext.Suppliers.AddAsync(user as Supplier);
                     break;
                 default:
-                    await dbContext.Users.AddAsync(user);
+                    await _dbContext.Users.AddAsync(user);
                     break;
             }
 
-            await dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteUserAsync(User user)
         {
-            dbContext.Users.Remove(user);
-            await dbContext.SaveChangesAsync();
+            _dbContext.Users.Remove(user);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
