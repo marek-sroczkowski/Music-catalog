@@ -102,15 +102,10 @@ namespace MusicCatalogAPI.Repositories
             updatedAlbum.SupplierId = existingAlbum.SupplierId;
         }
 
-        public async Task DeleteAlbumAsync(int albumId)
+        public async Task DeleteAlbumAsync(Album album)
         {
-            var album = await GetAlbumAsync(albumId);
-
-            if (album != null)
-            {
-                dbContext.Albums.Remove(album);
-                await dbContext.SaveChangesAsync();
-            }
+            dbContext.Albums.Remove(album);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MusicCatalogAPI.Authorization;
 using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Filters;
+using MusicCatalogAPI.Interfaces;
 using MusicCatalogAPI.Models.AlbumDtos;
 using MusicCatalogAPI.Repositories;
 using Newtonsoft.Json;
@@ -17,15 +18,13 @@ namespace MusicCatalogAPI.Controllers
     [Authorize]
     public class AlbumController : ControllerBase
     {
-        private readonly IAlbumRepository albumRepo;
-        private readonly IMapper mapper;
-        private readonly IAuthorizationService authorizationService;
+        private readonly IAlbumService _albumService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AlbumController(IAlbumRepository albumRepo, IMapper mapper, IAuthorizationService authorizationService)
+        public AlbumController(IAlbumService albumService, IAuthorizationService authorizationService)
         {
-            this.albumRepo = albumRepo;
-            this.mapper = mapper;
-            this.authorizationService = authorizationService;
+            _albumService = albumService;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet]
@@ -33,19 +32,11 @@ namespace MusicCatalogAPI.Controllers
         public async Task<ActionResult<List<AlbumDto>>> Get([FromQuery] AlbumParameters albumParameters)
         {
             var username = User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
-            var albums = await albumRepo.GetAlbumsAsync(username, albumParameters);
+            var albums = await _albumService.GetAlbumsAsync(username, albumParameters);
 
-            var metadata = new
-            {
-                albums.TotalCount,
-                albums.PageSize,
-                albums.CurrentPage,
-                albums.HasNext,
-                albums.HasPrevious
-            };
-
+            var metadata = await _albumService.GetMetadata(username, albumParameters);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-            return Ok(mapper.Map<List<AlbumDto>>(albums));
+            return Ok(albums);
         }
 
         [HttpGet("{albumId}")]
@@ -53,14 +44,13 @@ namespace MusicCatalogAPI.Controllers
         [ValidateAlbumExistence]
         public async Task<ActionResult<AlbumDetailsDto>> Get(int albumId)
         {
-            var album = await albumRepo.GetAlbumAsync(albumId);
+            var album = await _albumService.GetAlbumByIdAsync(albumId);
 
-            var authorizationResult = authorizationService.AuthorizeAsync(User, album, new ResourceOperationRequirement(OperationType.Read)).Result;
+            var authorizationResult = _authorizationService.AuthorizeAsync(User, album, new ResourceOperationRequirement(OperationType.Read)).Result;
             if (!authorizationResult.Succeeded)
                 return Forbid();
 
-            var albumDto = mapper.Map<AlbumDetailsDto>(album);
-            return Ok(albumDto);
+            return Ok(album);
         }
 
         [HttpPost]
@@ -70,10 +60,9 @@ namespace MusicCatalogAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var album = mapper.Map<Album>(model);
             var username = User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
 
-            await albumRepo.AddAlbumAsync(username, album);
+            var album = await _albumService.AddAlbumAsync(username, model);
             return Created("api/album/" + album.Id, null);
         }
 
@@ -84,15 +73,13 @@ namespace MusicCatalogAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var album = await albumRepo.GetAlbumAsync(albumId);
+            var album = await _albumService.GetAlbumByIdAsync(albumId);
 
-            var authorizationResult = authorizationService.AuthorizeAsync(User, album, new ResourceOperationRequirement(OperationType.Update)).Result;
+            var authorizationResult = _authorizationService.AuthorizeAsync(User, album, new ResourceOperationRequirement(OperationType.Update)).Result;
             if (!authorizationResult.Succeeded)
                 return Forbid();
 
-            var updatedAlbum = mapper.Map<Album>(model);
-
-            await albumRepo.UpdateAlbumAsync(albumId, updatedAlbum);
+            await _albumService.UpdateAlbumAsync(albumId, model);
             return NoContent(); 
         }
 
@@ -101,13 +88,13 @@ namespace MusicCatalogAPI.Controllers
         [ValidateAlbumExistence]
         public async Task<ActionResult> Delete(int albumId)
         {
-            var album = await albumRepo.GetAlbumAsync(albumId);
+            var album = await _albumService.GetAlbumByIdAsync(albumId);
 
-            var authorizationResult = authorizationService.AuthorizeAsync(User, album, new ResourceOperationRequirement(OperationType.Delete)).Result;
+            var authorizationResult = _authorizationService.AuthorizeAsync(User, album, new ResourceOperationRequirement(OperationType.Delete)).Result;
             if (!authorizationResult.Succeeded)
                 return Forbid();
 
-            await albumRepo.DeleteAlbumAsync(albumId);
+            await _albumService.DeleteAlbumAsync(albumId);
             return NoContent();
         }
     }

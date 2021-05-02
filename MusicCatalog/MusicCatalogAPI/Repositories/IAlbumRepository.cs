@@ -9,7 +9,7 @@ namespace MusicCatalogAPI.Repositories
     public interface IAlbumRepository
     {
         Task AddAlbumAsync(string username, Album album);
-        Task DeleteAlbumAsync(int albumId);
+        Task DeleteAlbumAsync(Album album);
         Task<Album> GetAlbumAsync(int albumId);
         Task<ICollection<Album>> GetAlbumsAsync(string username);
         Task<PagedList<Album>> GetAlbumsAsync(string username, AlbumParameters albumParameters);
