@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Filters;
+using MusicCatalogAPI.Interfaces;
 using MusicCatalogAPI.Models.SongDtos;
-using MusicCatalogAPI.Repositories;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MusicCatalogAPI.Controllers
@@ -15,22 +12,18 @@ namespace MusicCatalogAPI.Controllers
     [ValidateAlbumExistence]
     public class SongController : ControllerBase
     {
-        private readonly ISongRepository songRepo;
-        private readonly IMapper mapper;
+        private readonly ISongService _songService;
 
-        public SongController(ISongRepository songRepo, IMapper mapper)
+        public SongController(ISongService songService)
         {
-            this.songRepo = songRepo;
-            this.mapper = mapper;
+            _songService = songService;
         }
 
         [HttpGet]
         public async Task<ActionResult<CreateUpdateSongDto>> Get(int albumId)
         {
-            var songs = await songRepo.GetSongsAsync(albumId);
-            var songDtos = mapper.Map<List<CreateUpdateSongDto>>(songs);
-
-            return Ok(songDtos);
+            var songs = await _songService.GetSongsAsync(albumId);
+            return Ok(songs);
         }
 
         [HttpPost]
@@ -39,10 +32,8 @@ namespace MusicCatalogAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var song = mapper.Map<Song>(model);
-            await songRepo.AddSongAsync(albumId, song);
-
-            return Created($"api/album/{albumId}", null);
+            var song = await _songService.AddSongAsync(albumId, model);
+            return Created($"api/album/{albumId}/song/{song.Id}", null);
         }
 
         [HttpPut("{songId}")]
@@ -52,8 +43,7 @@ namespace MusicCatalogAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var updatedSong = mapper.Map<Song>(model);
-            await songRepo.UpdateSongAsync(songId, updatedSong);
+            await _songService.UpdateSongAsync(songId, model);
             return NoContent();
         }
 
@@ -61,14 +51,14 @@ namespace MusicCatalogAPI.Controllers
         [ValidateSongExistence]
         public async Task<ActionResult> Delete(int albumId, int songId)
         {
-            await songRepo.DeleteSongAsync(songId);
+            await _songService.DeleteSongAsync(albumId, songId);
             return NoContent();
         }
 
         [HttpDelete]
         public async Task<ActionResult> Delete(int albumId)
         {
-            await songRepo.DeleteSongsAsync(albumId);
+            await _songService.DeleteAllSongsAsync(albumId);
             return NoContent();
         }
     }

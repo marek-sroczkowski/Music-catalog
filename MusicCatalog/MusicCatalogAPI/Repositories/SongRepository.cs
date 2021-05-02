@@ -47,12 +47,8 @@ namespace MusicCatalogAPI.Repositories
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteSongAsync(int songId)
+        public async Task DeleteSongAsync(Song song)
         {
-            var song = await dbContext.Songs
-            .Include(s => s.Album)
-            .FirstOrDefaultAsync(s => s.Id.Equals(songId));
-
             dbContext.Remove(song);
             await dbContext.SaveChangesAsync();
         }
