@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogAPI.Authorization;
-using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Filters;
 using MusicCatalogAPI.Interfaces;
 using MusicCatalogAPI.Models.AlbumDtos;
-using MusicCatalogAPI.Repositories;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Security.Claims;

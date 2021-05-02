@@ -6,7 +6,6 @@ using MusicCatalogAPI.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MusicCatalogAPI.Entities;
-using MusicCatalogAPI.Helpers;
 
 namespace MusicCatalogAPI.Services
 {

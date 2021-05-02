@@ -1,5 +1,4 @@
 ﻿using MusicCatalogAPI.Filters;
-using MusicCatalogAPI.Helpers;
 using MusicCatalogAPI.Models.AlbumDtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
