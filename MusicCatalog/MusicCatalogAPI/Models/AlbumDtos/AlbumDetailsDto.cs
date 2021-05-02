@@ -3,6 +3,7 @@ using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Mapping;
 using MusicCatalogAPI.Models.ArtistDtos;
 using MusicCatalogAPI.Models.SongDtos;
+using MusicCatalogAPI.Models.SupplierDtos;
 using System.Collections.Generic;
 
 namespace MusicCatalogAPI.Models.AlbumDtos
@@ -14,13 +15,12 @@ namespace MusicCatalogAPI.Models.AlbumDtos
         public string Title { get; set; }
         public string Version { get; set; }
         public int PublicationYear { get; set; }
-        public string Supplier { get; set; }
+        public SupplierDto Supplier { get; set; }
         public List<SongDto> Songs{ get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Album, AlbumDetailsDto>()
-                .ForMember(dto => dto.Supplier, map => map.MapFrom(album => album.Supplier.Name));
+            profile.CreateMap<Album, AlbumDetailsDto>();
         }
     }
 }
