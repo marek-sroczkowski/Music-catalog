@@ -21,7 +21,7 @@ namespace MusicCatalogAPI.Repositories
             .Include(a => a.Albums)
             .ToListAsync();
 
-        public async Task<Artist> GetArtistAsync(int artistId) => (await GetArtistsAsync())
-            .FirstOrDefault(a => a.Id.Equals(artistId));
+        public async Task<Artist> GetArtistAsync(string name) => (await GetArtistsAsync())
+            .FirstOrDefault(a => a.Name.Equals(name));
     }
 }

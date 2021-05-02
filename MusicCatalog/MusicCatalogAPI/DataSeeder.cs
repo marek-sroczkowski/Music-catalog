@@ -26,6 +26,9 @@ namespace MusicCatalogAPI
 
         private void InsertSampleData()
         {
+            dbContext.Artists.AddRange(GetSampleArtists());
+            dbContext.SaveChanges();
+
             var supplier1 = new Supplier
             {
                 Name = "Super dostawca",
@@ -43,16 +46,14 @@ namespace MusicCatalogAPI
             List<Album> albums = new List<Album>();
             for (int i = 0; i < 30; i++)
             {
+                var artist = dbContext.Artists.FirstOrDefault(a => a.Name.Equals(GetSampleArtistName()));
                 albums.Add(new Album
                 {
                     Songs = GetSampleSongs(),
                     Title = $"Album{i}",
-                    PublicationYear = (new Random()).Next(2017, 2021),
+                    PublicationYear = (new Random()).Next(2017, 2022),
                     Version = GetSampleVersion(),
-                    Artist = new Artist
-                    {
-                        Name = GetSampleArtistName()
-                    }
+                    Artist = artist
                 });
             }
             return albums;
@@ -61,13 +62,22 @@ namespace MusicCatalogAPI
         private string GetSampleVersion()
         {
             string[] versions = new string[] { "Studyjny", "Demo", "Remix", "Studyjny", "Kompilacja", "Studyjny" };
-            return versions[(new Random()).Next(0, versions.Length - 1)];
+            return versions[(new Random()).Next(0, versions.Length)];
         }
 
         private string GetSampleArtistName()
         {
-            string[] artists = new string[] { "Jan Kowalski", "Jacek Nowak", "Monika Adamczyk", "Kooovalsy", "Mr Grzechu" };
-            return artists[(new Random()).Next(0, artists.Length - 1)];
+            var artistNames = new List<string> { "Jan Kowalski", "Jacek Nowak", "Monika Adamczyk", "Kooovalsy", "Mr Grzechu" };
+            return artistNames[(new Random()).Next(0, artistNames.Count)];
+        }
+
+        private List<Artist> GetSampleArtists()
+        {
+            var artistNames = new List<string> { "Jan Kowalski", "Jacek Nowak", "Monika Adamczyk", "Kooovalsy", "Mr Grzechu" };
+            var artists = new List<Artist>();
+            foreach (var name in artistNames)
+                artists.Add(new Artist { Name = name });
+            return artists;
         }
 
         private List<Song> GetSampleSongs()
@@ -79,9 +89,9 @@ namespace MusicCatalogAPI
                 songs.Add(new Song
                 {
                     Name = $"Piosenka{i}",
-                    PublicationYear = (new Random()).Next(2010, 2021),
-                    Duration = (new Random()).NextDouble() + 3.0
-                });
+                    PublicationYear = (new Random()).Next(2010, 2022),
+                    Duration = Math.Round((new Random()).NextDouble() + 2.6, 2)
+                }); ;
             }
             return songs;
         }

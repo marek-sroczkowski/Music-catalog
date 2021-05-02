@@ -6,7 +6,7 @@ namespace MusicCatalogAPI.Repositories.Interfaces
 {
     public interface IArtistRepository
     {
-        Task<Artist> GetArtistAsync(int artistId);
+        Task<Artist> GetArtistAsync(string name);
         Task<IEnumerable<Artist>> GetArtistsAsync();
     }
 }

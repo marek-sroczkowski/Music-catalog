@@ -86,7 +86,7 @@ namespace MusicCatalogAPI.Repositories
         public async Task AddAlbumAsync(string username, Album album)
         {
             var supplier = await _userRepository.GetSupplierAsync(username);
-            var artist = await _artistRepository.GetArtistAsync(album.Artist.Id);
+            var artist = await _artistRepository.GetArtistAsync(album.Artist.Name);
 
             if (artist != null)
                 album.Artist = artist;

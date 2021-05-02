@@ -67,4 +67,3 @@ C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\Musi
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\obj\Debug\netcoreapp3.1\MusicCatalogAPI.dll
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\obj\Debug\netcoreapp3.1\MusicCatalogAPI.pdb
 C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\obj\Debug\netcoreapp3.1\MusicCatalogAPI.genruntimeconfig.cache
-C:\Users\marek\OneDrive\Desktop\CsDev\ASPNETCore\MusicCatalog\Music-catalog\MusicCatalog\MusicCatalogAPI\obj\Debug\netcoreapp3.1\MusicCatalogAPI.csprojAssemblyReference.cache
