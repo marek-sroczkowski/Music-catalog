@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MusicCatalogAPI.Data;
 using MusicCatalogAPI.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,109 +21,69 @@ namespace MusicCatalogAPI
         public void Seed()
         {
             if (!dbContext.Users.Any())
-                InsertSimpleData();
+                InsertSampleData();
         }
 
-        private void InsertSimpleData()
+        private void InsertSampleData()
         {
-            var playMusic = new Supplier
+            var supplier1 = new Supplier
             {
-                Name = "Plus Music",
-                Username = "PlusMusic",
-                Albums = new List<Album>
-                {
-                    new Album
-                    {
-                        Title = "Dziękuję",
-                        PublicationYear = 2021,
-                        Version = "v1",
-                        Artist = new Artist
-                        {
-                            Name = "Król"
-                        },
-                        Songs = new List<Song>
-                        {
-                            new Song
-                            {
-                                Name = "ZBYT DOBRZE CI IDZIE",
-                                PublicationYear = 2021,
-                                Duration = 3.06
-                            },
-                            new Song
-                            {
-                                Name = "NA ZACHODZIE BEZ ZMIAN",
-                                PublicationYear = 2021,
-                                Duration = 2.11
-                            },
-                            new Song
-                            {
-                                Name = "KTO JEST CO",
-                                PublicationYear = 2021,
-                                Duration = 3.07
-                            },
-                            new Song
-                            {
-                                Name = "DRGAWKI I SKRĘTY",
-                                PublicationYear = 2021,
-                                Duration = 1.21
-                            },
-                            new Song
-                            {
-                                Name = "TAK JAK TY",
-                                PublicationYear = 2021,
-                                Duration = 3.30
-                            }
-                        }
-                    },
-                    new Album
-                    {
-                        Title = "Fight Club",
-                        PublicationYear = 2021,
-                        Version = "v2",
-                        Artist = new Artist
-                        {
-                            Name = "PRO8L3M"
-                        },
-                        Songs = new List<Song>
-                        {
-                            new Song
-                            {
-                                Name = "Witamy, witamy, witamy",
-                                PublicationYear = 2021,
-                                Duration = 2.51
-                            },
-                            new Song
-                            {
-                                Name = "GeForce",
-                                PublicationYear = 2021,
-                                Duration = 3.32
-                            },
-                            new Song
-                            {
-                                Name = "Strange Days",
-                                PublicationYear = 2021,
-                                Duration = 3.34
-                            },
-                            new Song
-                            {
-                                Name = "A2",
-                                PublicationYear = 2021,
-                                Duration = 3.17
-                            },
-                            new Song
-                            {
-                                Name = "The End Fin Esc Abort",
-                                PublicationYear = 2021,
-                                Duration = 3.25
-                            }
-                        }
-                    }
-                }
+                Name = "Super dostawca",
+                Username = "SuperDostawca",
             };
-            playMusic.PasswordHash = passwordHasher.HashPassword(playMusic, "1234");
+            supplier1.Albums = GetSampleAlbums();
+            supplier1.PasswordHash = passwordHasher.HashPassword(supplier1, "1234");
 
-            dbContext.Suppliers.Add(playMusic);
+            dbContext.Suppliers.Add(supplier1);
             dbContext.SaveChanges();
+        }
+
+        private List<Album> GetSampleAlbums()
+        {
+            List<Album> albums = new List<Album>();
+            for (int i = 0; i < 30; i++)
+            {
+                albums.Add(new Album
+                {
+                    Songs = GetSampleSongs(),
+                    Title = $"Album{i}",
+                    PublicationYear = (new Random()).Next(2017, 2021),
+                    Version = GetSampleVersion(),
+                    Artist = new Artist
+                    {
+                        Name = GetSampleArtistName()
+                    }
+                });
+            }
+            return albums;
+        }
+
+        private string GetSampleVersion()
+        {
+            string[] versions = new string[] { "Studyjny", "Demo", "Remix", "Studyjny", "Kompilacja", "Studyjny" };
+            return versions[(new Random()).Next(0, versions.Length - 1)];
+        }
+
+        private string GetSampleArtistName()
+        {
+            string[] artists = new string[] { "Jan Kowalski", "Jacek Nowak", "Monika Adamczyk", "Kooovalsy", "Mr Grzechu" };
+            return artists[(new Random()).Next(0, artists.Length - 1)];
+        }
+
+        private List<Song> GetSampleSongs()
+        {
+            List<Song> songs = new List<Song>();
+            int size = (new Random()).Next(1, 20);
+            for(int i = 0; i< size; i++)
+            {
+                songs.Add(new Song
+                {
+                    Name = $"Piosenka{i}",
+                    PublicationYear = (new Random()).Next(2010, 2021),
+                    Duration = (new Random()).NextDouble() + 3.0
+                });
+            }
+            return songs;
         }
     }
 }
