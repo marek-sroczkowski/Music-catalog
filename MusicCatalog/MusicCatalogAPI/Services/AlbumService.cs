@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using MusicCatalogAPI.Filters;
-using MusicCatalogAPI.Interfaces;
 using MusicCatalogAPI.Models.AlbumDtos;
-using MusicCatalogAPI.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MusicCatalogAPI.Entities;
+using MusicCatalogAPI.Services.Interfaces;
+using MusicCatalogAPI.Repositories.Interfaces;
 
 namespace MusicCatalogAPI.Services
 {

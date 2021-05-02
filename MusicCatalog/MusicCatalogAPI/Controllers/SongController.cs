@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogAPI.Filters;
-using MusicCatalogAPI.Interfaces;
 using MusicCatalogAPI.Models.SongDtos;
+using MusicCatalogAPI.Services.Interfaces;
 using System.Threading.Tasks;
 
 namespace MusicCatalogAPI.Controllers

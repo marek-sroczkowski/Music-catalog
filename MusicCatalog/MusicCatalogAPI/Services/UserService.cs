@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using MusicCatalogAPI.Entities;
-using MusicCatalogAPI.Interfaces;
 using MusicCatalogAPI.Models.AccountDtos;
-using MusicCatalogAPI.Repositories;
+using MusicCatalogAPI.Repositories.Interfaces;
+using MusicCatalogAPI.Services.Interfaces;
 using System.Threading.Tasks;
 
 namespace MusicCatalogAPI.Services

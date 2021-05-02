@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogAPI.Identity;
-using MusicCatalogAPI.Interfaces;
 using MusicCatalogAPI.Models.AccountDtos;
+using MusicCatalogAPI.Services.Interfaces;
 using System.Threading.Tasks;
 
 namespace MusicCatalogAPI.Controllers

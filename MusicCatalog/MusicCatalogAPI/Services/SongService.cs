@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MusicCatalogAPI.Entities;
-using MusicCatalogAPI.Interfaces;
 using MusicCatalogAPI.Models.SongDtos;
-using MusicCatalogAPI.Repositories;
+using MusicCatalogAPI.Repositories.Interfaces;
+using MusicCatalogAPI.Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -2,10 +2,11 @@
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MusicCatalogAPI.Interfaces;
 using MusicCatalogAPI.Models.AccountDtos;
 using MusicCatalogAPI.Repositories;
+using MusicCatalogAPI.Repositories.Interfaces;
 using MusicCatalogAPI.Services;
+using MusicCatalogAPI.Services.Interfaces;
 using MusicCatalogAPI.Validators;
 using System.Reflection;
 

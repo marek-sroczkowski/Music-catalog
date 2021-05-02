@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogAPI.Authorization;
 using MusicCatalogAPI.Filters;
-using MusicCatalogAPI.Interfaces;
 using MusicCatalogAPI.Models.AlbumDtos;
+using MusicCatalogAPI.Services.Interfaces;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Security.Claims;

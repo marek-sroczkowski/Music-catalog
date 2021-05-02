@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using MusicCatalogAPI.Repositories;
+using MusicCatalogAPI.Repositories.Interfaces;
 using System.Threading.Tasks;
 
 namespace MusicCatalogAPI.Filters
