@@ -1,13 +1,9 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MusicCatalogAPI.Models.AccountDtos;
 using MusicCatalogAPI.Repositories;
 using MusicCatalogAPI.Repositories.Interfaces;
 using MusicCatalogAPI.Services;
 using MusicCatalogAPI.Services.Interfaces;
-using MusicCatalogAPI.Validators;
 using System.Reflection;
 
 namespace MusicCatalogAPI.Installers
@@ -26,8 +22,6 @@ namespace MusicCatalogAPI.Installers
             services.AddScoped<IUserService, UserService>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddControllers().AddFluentValidation();
-            services.AddScoped<IValidator<RegisterSupplierDto>, RegisterSupplierValidation>();
         }
     }
 }
