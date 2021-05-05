@@ -2,6 +2,7 @@
 using MusicCatalogAPI.Models.AlbumDtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static MusicCatalogAPI.Services.AlbumService;
 
 namespace MusicCatalogAPI.Services.Interfaces
 {
@@ -12,6 +13,6 @@ namespace MusicCatalogAPI.Services.Interfaces
         Task<AlbumDto> AddAlbumAsync(string username, CreateAlbumDto newAlbum);
         Task UpdateAlbumAsync(int albumId, UpdateAlbumDto updateAlbum);
         Task DeleteAlbumAsync(int albumId);
-        Task<(int, int, int, bool, bool)> GetMetadata(string username, AlbumParameters albumParameters);
+        Task<Metdadata> GetMetadata(string username, AlbumParameters albumParameters);
     }
 }

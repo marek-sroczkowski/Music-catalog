@@ -52,10 +52,27 @@ namespace MusicCatalogAPI.Services
             await _albumRepository.DeleteAlbumAsync(album);
         }
 
-        public async Task<(int, int, int, bool, bool)> GetMetadata(string username, AlbumParameters albumParameters)
+        public class Metdadata
+        {
+            public int TotalCount { get; set; }
+            public int PageSize { get; set; }
+            public int CurrentPage { get; set; }
+            public int TotalPages { get; set; }
+            public bool HasNext { get; set; }
+            public bool HasPrevious { get; set; }
+        }
+
+        public async Task<Metdadata> GetMetadata(string username, AlbumParameters albumParameters)
         {
             var albums = await _albumRepository.GetAlbumsAsync(username, albumParameters);
-            return (albums.TotalCount, albums.PageSize, albums.CurrentPage, albums.HasNext, albums.HasPrevious);
+            return new Metdadata {
+                TotalCount = albums.TotalCount,
+                PageSize = albums.PageSize,
+                CurrentPage = albums.CurrentPage,
+                TotalPages = albums.TotalPages,
+                HasNext = albums.HasNext,
+                HasPrevious= albums.HasPrevious
+            };
         }
     }
 }

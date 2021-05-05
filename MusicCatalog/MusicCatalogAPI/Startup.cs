@@ -1,21 +1,9 @@
-using System.Text;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using MusicCatalogAPI.Authorization;
-using MusicCatalogAPI.Entities;
-using MusicCatalogAPI.Identity;
 using MusicCatalogAPI.Installers;
-using MusicCatalogAPI.Models;
-using MusicCatalogAPI.Repositories;
-using MusicCatalogAPI.Validators;
 
 namespace MusicCatalogAPI
 {
@@ -42,6 +30,8 @@ namespace MusicCatalogAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(c => c.WithOrigins("http://localhost:49781"));
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
