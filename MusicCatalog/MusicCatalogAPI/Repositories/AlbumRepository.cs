@@ -34,7 +34,7 @@ namespace MusicCatalogAPI.Repositories
             if (string.IsNullOrEmpty(artistName))
                 return;
 
-            albums = albums.Where(a => a.Artist.Name.Equals(artistName));
+            albums = albums.Where(a => a.Artist.Name.ToLowerInvariant().Contains(artistName.ToLowerInvariant()));
         }
 
         private void SearchByTitle(ref IEnumerable<Album> albums, string title)
@@ -42,7 +42,7 @@ namespace MusicCatalogAPI.Repositories
             if (string.IsNullOrEmpty(title))
                 return;
 
-            albums = albums.Where(a => a.Title.Equals(title));
+            albums = albums.Where(a => a.Title.ToLowerInvariant().Contains(title.ToLowerInvariant()));
         }
 
         private void SearchByPublicationYear(ref IEnumerable<Album> albums, int publicationYear)
