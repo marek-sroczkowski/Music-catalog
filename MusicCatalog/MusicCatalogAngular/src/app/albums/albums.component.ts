@@ -1,6 +1,6 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { albumDetailsModel, albumModel, AlbumService, songModel } from '../services/album/album.service';
+import { albumDetailsModel, albumModel, AlbumService, filteringModel, songModel } from '../services/album/album.service';
 import { UserService } from '../services/user/user.service';
 
 @Component({
@@ -24,11 +24,17 @@ export class AlbumsComponent implements OnInit {
     duration: 0.0
   }
 
+  filteringData: filteringModel = {
+    albumTitle: '',
+    artistName: '',
+    publicationYear: new Date().getFullYear(),
+  }
+
   constructor(private userService: UserService, private albumService: AlbumService, private router: Router) { 
     this.token = this.userService.getToken();
     this.isSingleView = false;
     this.isErrorSong = false;
-    this.getAlbums();
+    this.getAllAlbums();
   }
 
   ngOnInit(): void {
@@ -37,10 +43,17 @@ export class AlbumsComponent implements OnInit {
     }
   }
 
-  getAlbums() {
-    this.albumService.getAlbums(this.token).subscribe(albumsFromService => {
+  getAllAlbums() {
+    this.albumService.getAllAlbums(this.token).subscribe(albumsFromService => {
       this.albums = albumsFromService;
     })
+  }
+
+  onFilteringButtonClick() {
+    this.albumService.getAlbums(this.filteringData, this.token).subscribe(albumsFromService => {
+      this.albums = albumsFromService;
+    })
+    this.router.navigateByUrl('/albums');
   }
 
   onAlbumDetailsButtonClick(album: albumModel) {

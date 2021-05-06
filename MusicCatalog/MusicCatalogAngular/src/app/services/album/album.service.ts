@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, pipe } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 
 export interface artistModel {
@@ -33,6 +33,12 @@ export interface albumDetailsModel {
   artist: artistModel
 }
 
+export interface filteringModel {
+  albumTitle: string,
+  artistName: string,
+  publicationYear: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -41,9 +47,17 @@ export class AlbumService {
 
   constructor(private http: HttpClient) { }
 
-  getAlbums(token: string): Observable<albumModel[]>{
+  getAllAlbums(token: string): Observable<albumModel[]>{
     let headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<albumModel[]>('api/album', {headers: headers});
+  }
+
+  getAlbums(filteringData: filteringModel, token: string): Observable<albumModel[]>{
+    let headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    let params: HttpParams = new HttpParams().set('title', filteringData.albumTitle)
+                                              .set('artistName', filteringData.artistName)
+                                              .set('publicationYear', filteringData.publicationYear.toString());
+    return this.http.get<albumModel[]>('api/album', {headers: headers, params: params});
   }
 
   getSingleAlbum(id: number, token: string): Observable<albumDetailsModel> {
