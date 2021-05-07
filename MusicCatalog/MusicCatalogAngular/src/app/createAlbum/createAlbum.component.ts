@@ -29,6 +29,9 @@ export class CreateAlbumComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.userService.isLoged()) {
+      this.router.navigateByUrl('/login');
+    }
   }
 
   onSubmitAlbum() {
