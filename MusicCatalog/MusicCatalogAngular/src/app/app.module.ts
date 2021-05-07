@@ -27,7 +27,7 @@ import { CreateAlbumComponent } from './createAlbum/createAlbum.component';
     BrowserModule,
     RouterModule.forRoot(routes),
     FormsModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [
     UserService

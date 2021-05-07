@@ -39,6 +39,10 @@ export interface filteringModel {
   publicationYear: number
 }
 
+export interface paginationModel {
+  pageSize: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,11 +56,12 @@ export class AlbumService {
     return this.http.get<albumModel[]>('api/album', {headers: headers});
   }
 
-  getAlbums(filteringData: filteringModel, token: string): Observable<albumModel[]>{
+  getAlbums(filteringData: filteringModel, paginationData: paginationModel, token: string): Observable<albumModel[]>{
     let headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     let params: HttpParams = new HttpParams().set('title', filteringData.albumTitle)
                                               .set('artistName', filteringData.artistName)
-                                              .set('publicationYear', filteringData.publicationYear.toString());
+                                              .set('publicationYear', filteringData.publicationYear.toString())
+                                              .set('pageSize', paginationData.pageSize.toString());
     return this.http.get<albumModel[]>('api/album', {headers: headers, params: params});
   }
 

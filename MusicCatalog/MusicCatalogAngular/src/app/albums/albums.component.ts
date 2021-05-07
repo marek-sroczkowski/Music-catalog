@@ -1,6 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { albumDetailsModel, albumModel, AlbumService, filteringModel, songModel } from '../services/album/album.service';
+import { albumDetailsModel, albumModel, AlbumService, filteringModel, paginationModel, songModel } from '../services/album/album.service';
 import { UserService } from '../services/user/user.service';
 
 @Component({
@@ -14,8 +15,8 @@ export class AlbumsComponent implements OnInit {
   singleAlbumData!: albumDetailsModel;
   isSingleView: boolean;
   token: string;
-
   isErrorSong: boolean;
+  pages!: number[];
 
   songData: songModel = {
     id: 0,
@@ -30,7 +31,11 @@ export class AlbumsComponent implements OnInit {
     publicationYear: new Date().getFullYear(),
   }
 
-  constructor(private userService: UserService, private albumService: AlbumService, private router: Router) { 
+  paginationData: paginationModel = {
+    pageSize: 10
+  }
+
+  constructor(private userService: UserService, private albumService: AlbumService, private router: Router, private http: HttpClient) { 
     this.token = this.userService.getToken();
     this.isSingleView = false;
     this.isErrorSong = false;
@@ -50,7 +55,7 @@ export class AlbumsComponent implements OnInit {
   }
 
   onFilteringButtonClick() {
-    this.albumService.getAlbums(this.filteringData, this.token).subscribe(albumsFromService => {
+    this.albumService.getAlbums(this.filteringData, this.paginationData, this.token).subscribe(albumsFromService => {
       this.albums = albumsFromService;
     })
     this.router.navigateByUrl('/albums');
