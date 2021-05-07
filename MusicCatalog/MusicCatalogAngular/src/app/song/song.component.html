@@ -1,0 +1,57 @@
+<div style="margin: auto; width: 60%; margin-top: 10px">
+  <div class="text-center">
+    <h3>{{album.artist.name}}</h3>
+    <h2>{{album.title}}</h2>
+    <hr/>
+    <table class="table table-striped table-bordered table-sm">
+      <tr>
+        <th class="text-center">Tytuł</th>
+        <th class="text-center">Rok wydania</th>
+        <th class="text-center">Czas trwania</th>
+        <th class="text-center">Akcje</th>
+      </tr>
+  
+      <tr *ngFor="let song of album.songs">
+        <td class="text-center">{{ song.name }}</td>
+        <td class="text-center">{{ song.publicationYear }}</td>
+        <td class="text-center">{{ song.duration }}</td>
+        <td class="text-center">
+          <button (click)="onDeleteSongButtonClick(album, song)" class="btn btn-danger btn-sm">Usuń</button>
+        </td>
+      </tr>
+    </table>
+    <button (click)="back.emit()" class="btn btn-primary">Powrót</button>
+  </div>
+
+  <hr/>
+  <br/>
+
+<div class="text-center">
+  <h2>Dodanie nowego utworu do albumu</h2>
+  <div *ngIf="isErrorSong" class="alert alert-danger" role="alert">
+      Niepoprawne dane utworu
+  </div>
+</div>
+
+    <form (ngSubmit)="onSubmitSong(album)" novalidate>
+      <div class="form-row">
+        <div class="form-group col-md">
+            <label for="songName">Nazwa utworu</label>
+            <input [(ngModel)]="songData.name" type="text" class="form-control" id="songName" name="songName" placeholder="Podaj nazwę utworu">
+        </div>
+        <div class="form-group col-md">
+          <label for="publishingYear">Rok wydania</label>
+          <input [(ngModel)]="songData.publicationYear" type="number" class="form-control" id="publishingYear" name="publishingYear" placeholder="Podaj rok wydania albumu">
+        </div>
+        <div class="form-group col-md">
+            <label for="duration">Czas trwania</label>
+            <input [(ngModel)]="songData.duration" type="number" class="form-control" id="duration" name="duration" placeholder="Podaj długość utworu">
+        </div>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-success">Dodaj utwór</button>
+      </div>
+        </form>
+
+        <br/>
+</div>
