@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+
 <div *ngIf="!isSingleView" style="margin: auto; width: 80%; margin-top: 30px">
 
   <form (ngSubmit)="onFilteringButtonClick()">
@@ -34,7 +35,7 @@
     </tr>
 
     <tr *ngFor="let album of albums">
-      <td class="text-center"><a class="nav-link" (click)="onAlbumDetailsButtonClick(album)">{{album.title}}</a></td>
+      <td class="text-center"><a class="nav-link" style="cursor: pointer;" (click)="onAlbumDetailsButtonClick(album)">{{album.title}}</a></td>
       <td class="text-center">{{ album.artist.name }}</td>
       <td class="text-center">{{ album.publicationYear }}</td>
       <td class="text-center">{{ album.version }}</td>
@@ -48,94 +49,35 @@
 
   <br/>
 
-  <form (ngSubmit)="onFilteringButtonClick()" class="form-inline">
+  <form (ngSubmit)="refreshAlbums()" class="form-inline">
     <div class="form-group mx-sm-3 mb-2">
       <label for="pageSize" style="margin-right: 5px;">Ilość albumów na stronie </label>
         <input [(ngModel)]="paginationData.pageSize" type="number" class="form-control" id="pageSize" name="pageSize" placeholder="{{paginationData.pageSize}}">
     </div>
     <button type="submit" class="btn btn-primary mb-2">Odśwież</button>
-
-    <div class="text-right">
-    <nav aria-label="...">
-      <ul class="pagination">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Poprzednia</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active" aria-current="page">
-          <a class="page-link" href="#">2</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">Następna</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
   </form>
 
   <br/>
   <div class="text-center">
-    <button (click)="onCreateAlbumButtonClick()" id="button-3" class="btn btn-success">Dodaj album</button>
+      <ul class="pagination justify-content-center">
+        <li class="page-item"
+          [ngClass]="{'disabled': !isPreviousPage}">
+          <a class="page-link" style="cursor: pointer;" (click)="onPreviousPage()" tabindex="-1" aria-disabled="isPreviosPage">Poprzednia</a>
+        </li>
+        <li *ngIf="isPreviousPage" class="page-item"><a class="page-link" (click)="onPreviousPage()">{{ currentPageNumber - 1 }}</a></li>
+        <li class="page-item active" aria-current="page">
+          <a class="page-link" href="#">{{ currentPageNumber }}</a>
+        </li>
+        <li *ngIf="isNextPage" class="page-item"><a class="page-link" (click)="onNextPage()">{{ currentPageNumber + 1 }}</a></li>
+        <li class="page-item"
+          [ngClass]="{'disabled': !isNextPage}">
+          <a class="page-link" style="cursor: pointer;" (click)="onNextPage()" aria-disabled="isNextPage">Następna</a>
+        </li>
+      </ul>
   </div>
 
-  <br/>
-
 </div>
 
-<div *ngIf="isSingleView" style="margin: auto; width: 50%; margin-top: 10px">
-  <div class="text-center">
-    <h4>{{singleAlbumData.artist.name}}</h4>
-    <h2>{{singleAlbumData.title}}</h2>
-    <hr/>
-    <table class="table table-striped table-bordered table-sm">
-      <tr>
-        <th class="text-center">Tytuł</th>
-        <th class="text-center">Rok wydania</th>
-        <th class="text-center">Czas trwania</th>
-        <th class="text-center">Akcje</th>
-      </tr>
-  
-      <tr *ngFor="let song of singleAlbumData.songs">
-        <td class="text-center">{{ song.name }}</td>
-        <td class="text-center">{{ song.publicationYear }}</td>
-        <td class="text-center">{{ song.duration }}</td>
-        <td class="text-center">
-          <button (click)="onDeleteSongButtonClick(singleAlbumData, song)" class="btn btn-danger btn-sm">Usuń</button>
-        </td>
-      </tr>
-    </table>
-    <button (click)="isSingleView = !isSingleView" class="btn btn-primary">Powrót</button>
-  </div>
+<br/>
 
-  <br/>
-<div class="text-center">
-  <h4>Dodanie nowego utworu do albumu</h4>
-  <div *ngIf="isErrorSong" class="alert alert-danger" role="alert">
-      Niepoprawne dane utworu
-  </div>
-</div>
-
-<hr/>
-
-  <div style="margin: auto; width: 40%;">
-    <form (ngSubmit)="onSubmitSong(singleAlbumData)" novalidate>
-        <div class="form-group">
-            <label for="exampleInputName1">Nazwa utworu</label>
-            <input [(ngModel)]="songData.name" type="text" class="form-control" id="exampleInputName1" name="songName" placeholder="Podaj nazwę utworu">
-        </div>
-        <div class="form-group">
-          <label for="exampleInput3">Rok wydania</label>
-          <input [(ngModel)]="songData.publicationYear" type="number" class="form-control" id="exampleInput3" name="publishingYear" placeholder="Podaj rok wydania albumu">
-      </div>
-        <div class="form-group">
-            <label for="exampleInputName2">Czas trwania</label>
-            <input [(ngModel)]="songData.duration" type="number" class="form-control" id="exampleInputName2" name="duration" placeholder="Podaj długość utworu">
-        </div>
-        <div class="text-center">
-          <button type="submit" class="btn btn-success">Dodaj utwór</button>
-        </div>
-        </form>
-</div>
-</div>
-
+ <app-song *ngIf="isSingleView" [album]="singleAlbumData" (back)="isSingleView=!isSingleView"></app-song>

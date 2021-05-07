@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { albumDetailsModel, albumModel, AlbumService, filteringModel, paginationModel, songModel } from '../services/album/album.service';
@@ -16,7 +16,11 @@ export class AlbumsComponent implements OnInit {
   isSingleView: boolean;
   token: string;
   isErrorSong: boolean;
-  pages!: number[];
+
+  currentPageNumber = 1;
+  isPreviousPage = false;
+  isNextPage = false;
+  numberOfPages = 1;
 
   songData: songModel = {
     id: 0,
@@ -28,7 +32,7 @@ export class AlbumsComponent implements OnInit {
   filteringData: filteringModel = {
     albumTitle: '',
     artistName: '',
-    publicationYear: new Date().getFullYear(),
+    publicationYear: ''
   }
 
   paginationData: paginationModel = {
@@ -49,16 +53,42 @@ export class AlbumsComponent implements OnInit {
   }
 
   getAllAlbums() {
-    this.albumService.getAllAlbums(this.token).subscribe(albumsFromService => {
-      this.albums = albumsFromService;
+    this.refreshAlbums();
+  }
+
+  refreshAlbums() {
+    this.albumService.getAlbums(this.filteringData, this.paginationData, this.token, this.currentPageNumber).subscribe(response => {
+      const ourHeaders = JSON.parse(response.headers.get('X-Pagination'));
+      
+      this.isPreviousPage = ourHeaders.HasPrevious;
+      this.isNextPage = ourHeaders.HasNext;
+      this.numberOfPages = ourHeaders.TotalPages;
+
+      this.albums = [...response.body];
     })
   }
 
   onFilteringButtonClick() {
-    this.albumService.getAlbums(this.filteringData, this.paginationData, this.token).subscribe(albumsFromService => {
-      this.albums = albumsFromService;
-    })
-    this.router.navigateByUrl('/albums');
+    this.currentPageNumber = 1;
+    this.isPreviousPage = false;
+    this.isNextPage = false;
+    this.refreshAlbums();
+  }
+
+  onNextPage() {
+    this.currentPageNumber++;
+    if (this.currentPageNumber === this.numberOfPages) {
+      this.isNextPage = false;
+    }
+    this.refreshAlbums();
+  }
+
+  onPreviousPage() {
+    this.currentPageNumber--;
+    if (this.currentPageNumber === 1) {
+      this.isPreviousPage = false;
+    }
+    this.refreshAlbums();
   }
 
   onAlbumDetailsButtonClick(album: albumModel) {
@@ -68,31 +98,9 @@ export class AlbumsComponent implements OnInit {
     })
   }
 
-  onCreateAlbumButtonClick(){
-    this.router.navigateByUrl('/createAlbum');
-  }
-
   onDeleteAlbumButtonClick(album: albumModel){
     this.albumService.deleteAlbum(album.id, this.token).subscribe(value => {
-      window.location.reload();
-    });
-  }
-
-  onSubmitSong(album: albumDetailsModel) {
-    this.albumService.createSong(album.id, this.songData, this.token).subscribe(response => {
-      if(response) {
-        window.location.reload();
-      } else {
-        this.isErrorSong = true;
-      }
-    }, error => {
-      this.isErrorSong = true;
-    });
-  }
-
-  onDeleteSongButtonClick(album: albumDetailsModel, song: songModel){
-    this.albumService.deleteSong(album.id, song.id, this.token).subscribe(value => {
-      window.location.reload();
+      this.refreshAlbums();
     });
   }
 }

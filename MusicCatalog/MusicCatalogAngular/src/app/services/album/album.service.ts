@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, pipe } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { map, catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { map, catchError, tap } from 'rxjs/operators';
 
 export interface artistModel {
   name: string
@@ -36,7 +36,7 @@ export interface albumDetailsModel {
 export interface filteringModel {
   albumTitle: string,
   artistName: string,
-  publicationYear: number
+  publicationYear: string
 }
 
 export interface paginationModel {
@@ -56,13 +56,14 @@ export class AlbumService {
     return this.http.get<albumModel[]>('api/album', {headers: headers});
   }
 
-  getAlbums(filteringData: filteringModel, paginationData: paginationModel, token: string): Observable<albumModel[]>{
+  getAlbums(filteringData: filteringModel, paginationData: paginationModel, token: string, pageNumber: number = 1): Observable<any>{
     let headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     let params: HttpParams = new HttpParams().set('title', filteringData.albumTitle)
                                               .set('artistName', filteringData.artistName)
-                                              .set('publicationYear', filteringData.publicationYear.toString())
-                                              .set('pageSize', paginationData.pageSize.toString());
-    return this.http.get<albumModel[]>('api/album', {headers: headers, params: params});
+                                              .set('publicationYear', filteringData.publicationYear)
+                                              .set('pageSize', paginationData.pageSize.toString())
+                                              .set('pageNumber', pageNumber.toString());
+    return this.http.get<any>('api/album', {headers: headers, params: params, observe: 'response'});
   }
 
   getSingleAlbum(id: number, token: string): Observable<albumDetailsModel> {
@@ -70,7 +71,7 @@ export class AlbumService {
     return this.http.get<albumDetailsModel>(`api/album/${id}`, {headers: headers});
   }
 
-  createAlbum(album: albumDetailsModel, token: string): Observable<boolean> {
+  createAlbum(album: albumDetailsModel, token: string): Observable<any> {
     let headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
     return this.http.post('api/album', album, {headers: headers, observe: 'response'})
     .pipe(
@@ -90,7 +91,7 @@ export class AlbumService {
     return this.http.delete(`api/album/${id}`, {headers: headers});
   }
 
-  createSong(albumId: number, song: songModel, token: string): Observable<boolean> {
+  createSong(albumId: number, song: songModel, token: string): Observable<any> {
     let headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
     return this.http.post(`api/album/${albumId}/song`, song, {headers: headers, observe: 'response'})
     .pipe(
