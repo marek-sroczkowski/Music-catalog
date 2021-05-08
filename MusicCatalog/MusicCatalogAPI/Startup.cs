@@ -26,12 +26,16 @@ namespace MusicCatalogAPI
  
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataSeeder seeder)
         {
+            app.UseCors("AngularClient");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "MusicCatalog v1");
+                });
             }
-
-            app.UseCors(c => c.WithOrigins("http://localhost:49781"));
 
             app.UseAuthentication();
             app.UseHttpsRedirection();

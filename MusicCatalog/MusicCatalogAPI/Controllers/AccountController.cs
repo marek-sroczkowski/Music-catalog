@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using MusicCatalogAPI.Identity;
 using MusicCatalogAPI.Models.AccountDtos;
 using MusicCatalogAPI.Services.Interfaces;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Threading.Tasks;
 
 namespace MusicCatalogAPI.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class AccountController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -19,6 +21,7 @@ namespace MusicCatalogAPI.Controllers
             _jwtProvider = jwtProvider;
         }
 
+        [SwaggerOperation(Summary = "Creates a new supplier")]
         [HttpPost("register/supplier")]
         public async Task<ActionResult> RegisterSupplier([FromBody] RegisterSupplierDto model)
         {
@@ -29,6 +32,7 @@ namespace MusicCatalogAPI.Controllers
             return Ok();
         }
 
+        [SwaggerOperation(Summary = "Generates a token when logging in successfully")]
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody]LoginUserDto model)
         {

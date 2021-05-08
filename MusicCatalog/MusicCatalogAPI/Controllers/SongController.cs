@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MusicCatalogAPI.Filters;
 using MusicCatalogAPI.Models.SongDtos;
 using MusicCatalogAPI.Services.Interfaces;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Threading.Tasks;
 
 namespace MusicCatalogAPI.Controllers
@@ -10,6 +11,7 @@ namespace MusicCatalogAPI.Controllers
     [Route("/api/album/{albumId}/song")]
     [Authorize]
     [ValidateAlbumExistence]
+    [ApiController]
     public class SongController : ControllerBase
     {
         private readonly ISongService _songService;
@@ -19,6 +21,7 @@ namespace MusicCatalogAPI.Controllers
             _songService = songService;
         }
 
+        [SwaggerOperation(Summary = "Retrieves all songs from an specific album")]
         [HttpGet]
         public async Task<ActionResult<CreateUpdateSongDto>> Get(int albumId)
         {
@@ -26,6 +29,7 @@ namespace MusicCatalogAPI.Controllers
             return Ok(songs);
         }
 
+        [SwaggerOperation(Summary = "Creates a new song and assigns it to an specific album")]
         [HttpPost]
         public async Task<ActionResult> Post(int albumId, [FromBody] CreateUpdateSongDto model)
         {
@@ -36,6 +40,7 @@ namespace MusicCatalogAPI.Controllers
             return Created($"api/album/{albumId}/song/{song.Id}", null);
         }
 
+        [SwaggerOperation(Summary = "Updates an existing song from an specific album")]
         [HttpPut("{songId}")]
         [ValidateSongExistence]
         public async Task<ActionResult> Put(int albumId, int songId, [FromBody] CreateUpdateSongDto model)
@@ -47,6 +52,7 @@ namespace MusicCatalogAPI.Controllers
             return NoContent();
         }
 
+        [SwaggerOperation(Summary = "Deletes a specific song")]
         [HttpDelete("{songId}")]
         [ValidateSongExistence]
         public async Task<ActionResult> Delete(int albumId, int songId)
@@ -55,6 +61,7 @@ namespace MusicCatalogAPI.Controllers
             return NoContent();
         }
 
+        [SwaggerOperation(Summary = "Deletes all songs from a specific album")]
         [HttpDelete]
         public async Task<ActionResult> Delete(int albumId)
         {

@@ -5,6 +5,7 @@ using MusicCatalogAPI.Filters;
 using MusicCatalogAPI.Models.AlbumDtos;
 using MusicCatalogAPI.Services.Interfaces;
 using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace MusicCatalogAPI.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
+    [ApiController]
     public class AlbumController : ControllerBase
     {
         private readonly IAlbumService _albumService;
@@ -24,6 +26,7 @@ namespace MusicCatalogAPI.Controllers
             _authorizationService = authorizationService;
         }
 
+        [SwaggerOperation(Summary = "Retrieves all albums")]
         [HttpGet]
         [Authorize(Roles = "MusicSupplier")]
         public async Task<ActionResult<List<AlbumDto>>> Get([FromQuery] AlbumParameters albumParameters)
@@ -45,6 +48,7 @@ namespace MusicCatalogAPI.Controllers
             return Ok(albums);
         }
 
+        [SwaggerOperation(Summary = "Retrieves a specific album by unique id")]
         [HttpGet("{albumId}")]
         [Authorize(Roles = "MusicSupplier")]
         [ValidateAlbumExistence]
@@ -59,6 +63,7 @@ namespace MusicCatalogAPI.Controllers
             return Ok(album);
         }
 
+        [SwaggerOperation(Summary = "Creates a new album")]
         [HttpPost]
         [Authorize(Roles = "MusicSupplier")]
         public async Task<ActionResult> Post([FromBody] CreateAlbumDto model)
@@ -72,6 +77,7 @@ namespace MusicCatalogAPI.Controllers
             return Created("api/album/" + album.Id, null);
         }
 
+        [SwaggerOperation(Summary = "Updates a existing album")]
         [HttpPut("{albumId}")]
         [ValidateAlbumExistence]
         public async Task<ActionResult> Put(int albumId, [FromBody] UpdateAlbumDto model)
@@ -89,7 +95,7 @@ namespace MusicCatalogAPI.Controllers
             return NoContent(); 
         }
 
-
+        [SwaggerOperation(Summary = "Deletes a specific album")]
         [HttpDelete("{albumId}")]
         [ValidateAlbumExistence]
         public async Task<ActionResult> Delete(int albumId)
