@@ -26,7 +26,6 @@ export class LoginComponent implements OnInit {
     console.log(this.loginModel);
     this.userService.login(this.loginModel).subscribe(response => {
       if (response) {
-        console.log('good login');
         this.router.navigateByUrl('/');
       } else {
         this.isErrorInLogin = true;

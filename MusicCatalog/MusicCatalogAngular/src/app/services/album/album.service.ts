@@ -63,7 +63,7 @@ export class AlbumService {
                                               .set('publicationYear', filteringData.publicationYear)
                                               .set('pageSize', paginationData.pageSize.toString())
                                               .set('pageNumber', pageNumber.toString());
-    return this.http.get<any>('api/album', {headers: headers, params: params, observe: 'response'});
+    return this.http.get<any>('/api/album', {headers: headers, params: params, observe: 'response'});
   }
 
   getSingleAlbum(id: number, token: string): Observable<albumDetailsModel> {

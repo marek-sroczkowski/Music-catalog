@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, of, pipe } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
@@ -15,18 +16,16 @@ export interface LoginModel {
   password: string
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
+
 export class UserService {
 
-  JWT_TOKEN = 'JWT_TOKEN'
-
-  islogedin: boolean = false;
+  isLoggedIn: boolean = false;
   jwtToken: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   register(registerData: RegisterModel): Observable<boolean> {
     return this.http.post('api/account/register/supplier', registerData, { observe: 'response' })
@@ -35,7 +34,6 @@ export class UserService {
           if(response.status === 400) {
             return false;
           }
-          console.log(response);
           const loginData: LoginModel = {
             username: registerData.username,
             password: registerData.password
@@ -43,7 +41,6 @@ export class UserService {
           return true;
         }),
         catchError(error => {
-          console.log("error");
           return of(false);
         })
       );
@@ -55,33 +52,29 @@ export class UserService {
         map(response => {
           if (response.status === 400)
             return false;
-          console.log(response);
           this.storeToken(response.body!);
-          console.log(response.body);
           return true;
         }),
-        catchError(error => {
-          console.log("error");
+        catchError(error => {;
           return of(false);
         })
       );
   }
 
   logout() {
-    console.log("removing");
-    localStorage.removeItem(this.JWT_TOKEN);
-    window.location.reload();
+    localStorage.removeItem(this.jwtToken);
+    this.router.navigateByUrl('/login');
   }
 
   isLoged(): boolean {
-    return !!localStorage.getItem(this.JWT_TOKEN);
+    return !!localStorage.getItem(this.jwtToken);
   }
 
   getToken(): string {
-    return localStorage.getItem(this.JWT_TOKEN)!;
+    return localStorage.getItem(this.jwtToken)!;
   }
 
   private storeToken(token: string) {
-    localStorage.setItem(this.JWT_TOKEN, token);
+    localStorage.setItem(this.jwtToken, token);
   }
 }

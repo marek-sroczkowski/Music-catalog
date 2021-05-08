@@ -64,11 +64,11 @@
           [ngClass]="{'disabled': !isPreviousPage}">
           <a class="page-link" style="cursor: pointer;" (click)="onPreviousPage()" tabindex="-1" aria-disabled="isPreviosPage">Poprzednia</a>
         </li>
-        <li *ngIf="isPreviousPage" class="page-item"><a class="page-link" (click)="onPreviousPage()">{{ currentPageNumber - 1 }}</a></li>
+        <li *ngIf="isPreviousPage" class="page-item"><a class="page-link" (click)="onPreviousPage()" style="cursor: pointer;">{{ currentPageNumber - 1 }}</a></li>
         <li class="page-item active" aria-current="page">
           <a class="page-link" href="#">{{ currentPageNumber }}</a>
         </li>
-        <li *ngIf="isNextPage" class="page-item"><a class="page-link" (click)="onNextPage()">{{ currentPageNumber + 1 }}</a></li>
+        <li *ngIf="isNextPage" class="page-item"><a class="page-link" (click)="onNextPage()" style="cursor: pointer;">{{ currentPageNumber + 1 }}</a></li>
         <li class="page-item"
           [ngClass]="{'disabled': !isNextPage}">
           <a class="page-link" style="cursor: pointer;" (click)="onNextPage()" aria-disabled="isNextPage">Następna</a>

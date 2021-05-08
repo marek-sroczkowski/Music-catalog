@@ -57,6 +57,10 @@ export class AlbumsComponent implements OnInit {
   }
 
   refreshAlbums() {
+    if(this.filteringData.publicationYear === ''){
+      this.filteringData.publicationYear = '0';
+    }
+
     this.albumService.getAlbums(this.filteringData, this.paginationData, this.token, this.currentPageNumber).subscribe(response => {
       const ourHeaders = JSON.parse(response.headers.get('X-Pagination'));
       
@@ -66,6 +70,9 @@ export class AlbumsComponent implements OnInit {
 
       this.albums = [...response.body];
     })
+    if(this.filteringData.publicationYear === '0'){
+      this.filteringData.publicationYear = '';
+    }
   }
 
   onFilteringButtonClick() {
