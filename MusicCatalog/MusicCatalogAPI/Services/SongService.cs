@@ -38,10 +38,11 @@ namespace MusicCatalogAPI.Services
             return _mapper.Map<SongDto>(song);
         }
 
-        public async Task UpdateSongAsync(int songId, CreateUpdateSongDto updateSong)
+        public async Task UpdateSongAsync(int albumId, int songId, CreateUpdateSongDto updatedSongModel)
         {
-            var song = _mapper.Map<Song>(updateSong);
-            await _songRepository.UpdateSongAsync(songId, song);
+            var existingSong = await _songRepository.GetSongAsync(albumId, songId);
+            var updatedSong = _mapper.Map(updatedSongModel, existingSong);
+            await _songRepository.UpdateSongAsync(updatedSong);
         }
 
         public async Task DeleteSongAsync(int albumId, int songId)

@@ -31,8 +31,17 @@ namespace MusicCatalogAPI.Controllers
             var username = User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
             var albums = await _albumService.GetAlbumsAsync(username, albumParameters);
 
-            var metadata = await _albumService.GetMetadata(username, albumParameters);
+            var metadata = new
+            {
+                albums.TotalCount,
+                albums.PageSize,
+                albums.CurrentPage,
+                albums.TotalPages,
+                albums.HasNext,
+                albums.HasPrevious
+            };
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
             return Ok(albums);
         }
 

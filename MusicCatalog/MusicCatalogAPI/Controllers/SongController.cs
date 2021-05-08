@@ -43,7 +43,7 @@ namespace MusicCatalogAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _songService.UpdateSongAsync(songId, model);
+            await _songService.UpdateSongAsync(albumId, songId, model);
             return NoContent();
         }
 

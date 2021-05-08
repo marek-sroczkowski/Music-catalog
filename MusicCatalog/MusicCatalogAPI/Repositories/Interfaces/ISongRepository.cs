@@ -11,6 +11,6 @@ namespace MusicCatalogAPI.Repositories.Interfaces
         Task DeleteSongsAsync(int albumId);
         Task<Song> GetSongAsync(int albumId, int songId);
         Task<ICollection<Song>> GetSongsAsync(int albumId);
-        Task UpdateSongAsync(int songId, Song newSong);
+        Task UpdateSongAsync(Song updatedSong);
     }
 }

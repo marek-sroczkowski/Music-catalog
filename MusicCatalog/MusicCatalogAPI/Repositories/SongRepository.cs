@@ -35,16 +35,9 @@ namespace MusicCatalogAPI.Repositories
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateSongAsync(int songId, Song newSong)
+        public async Task UpdateSongAsync(Song updatedSong)
         {
-            var song = await dbContext.Songs
-                .Include(s => s.Album)
-                .FirstOrDefaultAsync(s => s.Id.Equals(songId));
-
-            newSong.Id = song.Id;
-            newSong.AlbumId = song.AlbumId;
-
-            dbContext.Entry(song).CurrentValues.SetValues(newSong);
+            dbContext.Update(updatedSong);
             await dbContext.SaveChangesAsync();
         }
 

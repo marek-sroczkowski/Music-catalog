@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Services.Interfaces;
 using MusicCatalogAPI.Repositories.Interfaces;
+using System.Linq;
+using MusicCatalogAPI.Helpers;
 
 namespace MusicCatalogAPI.Services
 {
@@ -20,10 +22,16 @@ namespace MusicCatalogAPI.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<AlbumDto>> GetAlbumsAsync(string username, AlbumParameters albumParameters)
+        public async Task<PagedList<AlbumDto>> GetAlbumsAsync(string username, AlbumParameters albumParameters)
         {
-            var albums = await _albumRepository.GetAlbumsAsync(username, albumParameters);
-            return _mapper.Map<IEnumerable<AlbumDto>>(albums);
+            var albums = await _albumRepository.GetAlbumsAsync(username);
+
+            SearchByTitle(ref albums, albumParameters.Title);
+            SearchByArtistName(ref albums, albumParameters.ArtistName);
+            SearchByPublicationYear(ref albums, albumParameters.PublicationYear);
+
+            var albumsDto = _mapper.Map<ICollection<AlbumDto>>(albums);
+            return PagedList<AlbumDto>.ToPagedList(albumsDto.ToList(), albumParameters.PageNumber, albumParameters.PageSize);
         }
 
         public async Task<AlbumDetailsDto> GetAlbumByIdAsync(int albumId)
@@ -39,11 +47,11 @@ namespace MusicCatalogAPI.Services
             return _mapper.Map<AlbumDto>(album);
         }
 
-        public async Task UpdateAlbumAsync(int albumId, UpdateAlbumDto updateAlbum)
+        public async Task UpdateAlbumAsync(int albumId, UpdateAlbumDto updatedAlbum)
         {
             var existingAlbum = await _albumRepository.GetAlbumAsync(albumId);
-            var album = _mapper.Map(updateAlbum, existingAlbum);
-            await _albumRepository.UpdateAlbumAsync(albumId, album);
+            var album = _mapper.Map(updatedAlbum, existingAlbum);
+            await _albumRepository.UpdateAlbumAsync(album);
         }
 
         public async Task DeleteAlbumAsync(int albumId)
@@ -52,27 +60,28 @@ namespace MusicCatalogAPI.Services
             await _albumRepository.DeleteAlbumAsync(album);
         }
 
-        public class Metdadata
+        private void SearchByArtistName(ref IEnumerable<Album> albums, string artistName)
         {
-            public int TotalCount { get; set; }
-            public int PageSize { get; set; }
-            public int CurrentPage { get; set; }
-            public int TotalPages { get; set; }
-            public bool HasNext { get; set; }
-            public bool HasPrevious { get; set; }
+            if (string.IsNullOrEmpty(artistName))
+                return;
+
+            albums = albums.Where(a => a.Artist.Name.ToLowerInvariant().Contains(artistName.ToLowerInvariant()));
         }
 
-        public async Task<Metdadata> GetMetadata(string username, AlbumParameters albumParameters)
+        private void SearchByTitle(ref IEnumerable<Album> albums, string title)
         {
-            var albums = await _albumRepository.GetAlbumsAsync(username, albumParameters);
-            return new Metdadata {
-                TotalCount = albums.TotalCount,
-                PageSize = albums.PageSize,
-                CurrentPage = albums.CurrentPage,
-                TotalPages = albums.TotalPages,
-                HasNext = albums.HasNext,
-                HasPrevious= albums.HasPrevious
-            };
+            if (string.IsNullOrEmpty(title))
+                return;
+
+            albums = albums.Where(a => a.Title.ToLowerInvariant().Contains(title.ToLowerInvariant()));
+        }
+
+        private void SearchByPublicationYear(ref IEnumerable<Album> albums, int publicationYear)
+        {
+            if (publicationYear == 0)
+                return;
+
+            albums = albums.Where(a => a.PublicationYear.Equals(publicationYear));
         }
     }
 }
