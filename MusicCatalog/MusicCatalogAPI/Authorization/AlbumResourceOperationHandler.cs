@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using MusicCatalogAPI.Entities;
 using MusicCatalogAPI.Models.AlbumDtos;
 using System.Security.Claims;
 using System.Threading.Tasks;
