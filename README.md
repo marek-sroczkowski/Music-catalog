@@ -27,4 +27,6 @@ To run Angular project:
 $ cd ../MusicCatalogAngular
 $ ng serve install
 ```
-Navigate to `http://localhost:4200/` and now you can use this application.
+Navigate to `http://localhost:4200/` to use the client app.
+
+Navigate to `http://localhost:49781/swagger/index.html` to use swagger.
